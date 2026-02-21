@@ -162,13 +162,13 @@ export default function Index() {
                           <img src={course.image_url} alt={course.title} className="w-full h-full object-cover" />
                           {cat && (
                             <div className="absolute top-3 left-3">
-                              <IconPlate svg={cat.icon_svg} pngUrl={cat.icon_png_url} sizePx={48} variant={cat.icon_plate_variant || "dark"} />
+                              <IconPlate svg={cat.icon_svg} pngUrl={cat.icon_png_url} sizePx={72} variant={cat.icon_plate_variant || "dark"} />
                             </div>
                           )}
                         </div>
                       ) : (
                         <div className="p-6 pb-0 flex items-start">
-                          <IconPlate svg={cat?.icon_svg} pngUrl={cat?.icon_png_url} sizePx={56} variant={cat?.icon_plate_variant || "dark"} />
+                          <IconPlate svg={cat?.icon_svg} pngUrl={cat?.icon_png_url} sizePx={80} variant={cat?.icon_plate_variant || "dark"} />
                         </div>
                       )}
                       <div className="p-6">

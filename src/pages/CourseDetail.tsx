@@ -155,7 +155,7 @@ export default function CourseDetail() {
               <IconPlate
                 svg={cat.icon_svg}
                 pngUrl={cat.icon_png_url}
-                sizePx={88}
+                sizePx={112}
                 variant="yellow"
               />
             )}

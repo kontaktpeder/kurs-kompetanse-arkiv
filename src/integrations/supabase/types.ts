@@ -38,6 +38,7 @@ export type Database = {
           icon_size_px: number
           icon_svg: string | null
           icon_svg_url: string | null
+          icon_type: string
           id: string
           is_active: boolean
           is_system: boolean
@@ -54,6 +55,7 @@ export type Database = {
           icon_size_px?: number
           icon_svg?: string | null
           icon_svg_url?: string | null
+          icon_type?: string
           id?: string
           is_active?: boolean
           is_system?: boolean
@@ -70,6 +72,7 @@ export type Database = {
           icon_size_px?: number
           icon_svg?: string | null
           icon_svg_url?: string | null
+          icon_type?: string
           id?: string
           is_active?: boolean
           is_system?: boolean

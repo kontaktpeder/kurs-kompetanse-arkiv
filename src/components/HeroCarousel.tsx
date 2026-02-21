@@ -83,7 +83,7 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[60vh] lg:min-h-[80vh]">
+      <div className="grid grid-cols-1 lg:grid-cols-3 min-h-[60vh] lg:min-h-[80vh]">
         {/* LEFT: Text column – solid background, no image behind */}
         <div className="relative z-10 bg-background flex flex-col justify-center px-6 sm:px-12 lg:px-16 xl:px-20 py-16 lg:py-24">
           <div className="max-w-[540px]">
@@ -140,7 +140,7 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
         </div>
 
         {/* RIGHT: Image column – full bleed image */}
-        <div className="relative min-h-[40vh] lg:min-h-0">
+        <div className="relative min-h-[40vh] lg:min-h-0 lg:col-span-2">
           {slides.map((s, i) => (
             <div
               key={s.id}

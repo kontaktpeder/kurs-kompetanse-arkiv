@@ -169,18 +169,18 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
 
           {/* Facts plate – bottom right on desktop */}
           <div className="absolute bottom-0 left-0 right-0 z-10 hidden lg:block">
-            <div className="bg-primary text-primary-foreground px-8 py-5 flex justify-around">
+            <div className="bg-primary text-primary-foreground px-8 py-6 flex justify-around">
               {[
-                { num: "2006", label: "Siden" },
-                { num: totalRuns ?? "—", label: "Gjennomf." },
+                { num: "2006", label: "Etablert" },
+                { num: totalRuns ?? "—", label: "Gjennomføringer" },
                 { num: "3", label: "Språk" },
                 { num: "98%", label: "Bestått" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
-                  <div className="text-xl font-bold" style={{ fontFamily: "Oswald, sans-serif" }}>
+                  <div className="text-3xl lg:text-4xl font-bold" style={{ fontFamily: "Oswald, sans-serif" }}>
                     {stat.num}
                   </div>
-                  <div className="text-[10px] uppercase tracking-wider opacity-80">{stat.label}</div>
+                  <div className="text-xs uppercase tracking-wider opacity-80">{stat.label}</div>
                 </div>
               ))}
             </div>

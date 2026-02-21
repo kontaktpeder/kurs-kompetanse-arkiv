@@ -79,67 +79,40 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
 
   return (
     <section
-      className="relative min-h-[50vh] lg:min-h-[70vh] overflow-hidden"
+      className="relative overflow-hidden"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* Background images – pushed right */}
-      {slides.map((s, i) => (
-        <div
-          key={s.id}
-          className="absolute inset-0 transition-opacity duration-700 ease-in-out"
-          style={{
-            opacity: i === current ? 1 : 0,
-            zIndex: i === current ? 1 : 0,
-          }}
-        >
-          <img
-            src={s.image_url}
-            alt=""
-            className="w-full h-full object-cover"
-            style={{ objectPosition: "70% 15%" }}
-          />
-        </div>
-      ))}
-
-      {/* Overlays – hard industrial gradient, stronger on left for text */}
-      <div className="absolute inset-0 z-[2]" style={{
-        background: "linear-gradient(to right, hsl(var(--background)) 0%, hsl(var(--background) / 0.92) 30%, hsl(var(--background) / 0.5) 55%, hsl(var(--background) / 0.15) 80%, transparent 100%)",
-      }} />
-      <div className="absolute inset-0 z-[2]" style={{
-        background: "linear-gradient(to top, hsl(var(--background)) 0%, transparent 40%)",
-      }} />
-
-      {/* Content – hardcoded, does not change per slide */}
-      <div className="relative z-10 h-full min-h-[50vh] lg:min-h-[70vh] flex items-end">
-        <div className="w-full px-6 sm:px-12 lg:px-20 pb-16 lg:pb-20 pt-32">
-          <div className="max-w-[720px]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[60vh] lg:min-h-[80vh]">
+        {/* LEFT: Text column – solid background, no image behind */}
+        <div className="relative z-10 bg-background flex flex-col justify-center px-6 sm:px-12 lg:px-16 xl:px-20 py-16 lg:py-24">
+          <div className="max-w-[540px]">
             {/* Micro label */}
-            <p className="text-primary text-xs uppercase tracking-[0.3em] font-semibold mb-4">
+            <p className="text-primary text-xs uppercase tracking-[0.3em] font-semibold mb-5">
               {microLabel}
             </p>
 
-            {/* Title – hardcoded */}
+            {/* Title */}
             <h1
-              className="font-bold leading-[0.92] mb-3"
+              className="font-bold leading-[0.92] mb-4"
               style={{
                 fontFamily: "Oswald, sans-serif",
-                fontSize: "clamp(40px, 5vw, 80px)",
+                fontSize: "clamp(36px, 4.5vw, 72px)",
               }}
             >
               Kurs som gir<br />kompetanse
             </h1>
 
             {/* Yellow accent line */}
-            <div className="h-[3px] w-20 bg-primary mb-5" />
+            <div className="h-[3px] w-20 bg-primary mb-6" />
 
-            {/* Subtitle – hardcoded */}
-            <p className="text-muted-foreground text-lg sm:text-xl max-w-lg mb-8 leading-relaxed">
+            {/* Subtitle */}
+            <p className="text-muted-foreground text-lg sm:text-xl max-w-md mb-10 leading-relaxed">
               Sertifisert og dokumentert opplæring – på norsk, engelsk og tegnspråk.
             </p>
 
-            {/* CTAs – hardcoded */}
-            <div className="flex flex-col sm:flex-row gap-3">
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row gap-3 mb-10">
               <Button asChild size="lg" className="h-14 px-10 text-base">
                 <Link to="/kurs">Se kurs</Link>
               </Button>
@@ -147,72 +120,103 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
                 <Link to="/foresporsel">Send forespørsel</Link>
               </Button>
             </div>
+
+            {/* Slide indicators – inside text column */}
+            {count > 1 && (
+              <div className="flex gap-1.5 items-center">
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => goTo(i)}
+                    className={`h-1 transition-all duration-300 ${
+                      i === current ? "w-10 bg-primary" : "w-5 bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                    }`}
+                    aria-label={`Slide ${i + 1}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
-      </div>
 
-      {/* Facts plate – bottom right */}
-      <div className="absolute bottom-0 right-0 z-10 hidden lg:block">
-        <div className="bg-primary text-primary-foreground px-8 py-5 flex gap-8">
-          {[
-            { num: "2006", label: "Siden" },
-            { num: totalRuns ?? "—", label: "Gjennomf." },
-            { num: "3", label: "Språk" },
-            { num: "98%", label: "Bestått" },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center">
-              <div className="text-xl font-bold" style={{ fontFamily: "Oswald, sans-serif" }}>
-                {stat.num}
-              </div>
-              <div className="text-[10px] uppercase tracking-wider opacity-80">{stat.label}</div>
+        {/* RIGHT: Image column – full bleed image */}
+        <div className="relative min-h-[40vh] lg:min-h-0">
+          {slides.map((s, i) => (
+            <div
+              key={s.id}
+              className="absolute inset-0 transition-opacity duration-700 ease-in-out"
+              style={{
+                opacity: i === current ? 1 : 0,
+                zIndex: i === current ? 1 : 0,
+              }}
+            >
+              <img
+                src={s.image_url}
+                alt=""
+                className="w-full h-full object-cover"
+                style={{ objectPosition: "center 20%" }}
+              />
             </div>
           ))}
+
+          {/* Subtle left edge blend on desktop */}
+          <div className="hidden lg:block absolute inset-y-0 left-0 w-16 z-[2]" style={{
+            background: "linear-gradient(to right, hsl(var(--background)), transparent)",
+          }} />
+
+          {/* Bottom gradient on mobile for text readability */}
+          <div className="lg:hidden absolute inset-x-0 bottom-0 h-16 z-[2]" style={{
+            background: "linear-gradient(to top, hsl(var(--background)), transparent)",
+          }} />
+
+          {/* Facts plate – bottom right on desktop */}
+          <div className="absolute bottom-0 right-0 z-10 hidden lg:block">
+            <div className="bg-primary text-primary-foreground px-8 py-5 flex gap-8">
+              {[
+                { num: "2006", label: "Siden" },
+                { num: totalRuns ?? "—", label: "Gjennomf." },
+                { num: "3", label: "Språk" },
+                { num: "98%", label: "Bestått" },
+              ].map((stat) => (
+                <div key={stat.label} className="text-center">
+                  <div className="text-xl font-bold" style={{ fontFamily: "Oswald, sans-serif" }}>
+                    {stat.num}
+                  </div>
+                  <div className="text-[10px] uppercase tracking-wider opacity-80">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation arrows – on the image */}
+          {count > 1 && (
+            <>
+              <button
+                onClick={prev}
+                className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-11 h-11 border border-white/30 bg-background/40 backdrop-blur-sm flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+                aria-label="Forrige slide"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <button
+                onClick={next}
+                className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-11 h-11 border border-white/30 bg-background/40 backdrop-blur-sm flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+                aria-label="Neste slide"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </>
+          )}
         </div>
       </div>
 
-      {/* Navigation arrows – square, industrial */}
+      {/* Progress bar – full width bottom */}
       {count > 1 && (
-        <>
-          <button
-            onClick={prev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 border border-primary/50 bg-background/40 backdrop-blur-sm flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-            aria-label="Forrige slide"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <button
-            onClick={next}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 border border-primary/50 bg-background/40 backdrop-blur-sm flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-            aria-label="Neste slide"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
-        </>
-      )}
-
-      {/* Progress bar + indicators – bottom */}
-      {count > 1 && (
-        <div className="absolute bottom-0 left-0 right-0 lg:right-auto lg:max-w-[50%] z-10">
-          {/* Slide indicators */}
-          <div className="flex gap-1 px-6 sm:px-12 lg:px-20 mb-2">
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goTo(i)}
-                className={`h-1 transition-all duration-300 ${
-                  i === current ? "w-10 bg-primary" : "w-5 bg-muted-foreground/30 hover:bg-muted-foreground/50"
-                }`}
-                aria-label={`Slide ${i + 1}`}
-              />
-            ))}
-          </div>
-          {/* Progress line */}
-          <div className="h-[2px] bg-border/20">
-            <div
-              className="h-full bg-primary transition-[width] duration-100 ease-linear"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
+        <div className="h-[2px] bg-border/20">
+          <div
+            className="h-full bg-primary transition-[width] duration-100 ease-linear"
+            style={{ width: `${progress}%` }}
+          />
         </div>
       )}
     </section>

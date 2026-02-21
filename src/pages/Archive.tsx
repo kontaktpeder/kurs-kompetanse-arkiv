@@ -4,7 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { type MediaItem } from "@/lib/types";
 import { MapPin, Calendar, Users, CheckCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale";
 
@@ -41,10 +40,17 @@ export default function Archive() {
     return true;
   });
 
+  // Masonry-like sizing based on index
+  const getSpan = (i: number) => {
+    if (i === 0) return "md:col-span-2 md:row-span-2";
+    if (i % 5 === 3) return "md:col-span-2";
+    return "";
+  };
+
   return (
     <div className="py-12 px-4">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2">Arkiv</h1>
+        <h1 className="text-4xl font-bold mb-2">Arkiv</h1>
         <p className="text-muted-foreground mb-8">Dokumenterte kursgjennomføringer</p>
 
         {/* Filters */}
@@ -52,7 +58,7 @@ export default function Archive() {
           <select
             value={courseFilter}
             onChange={(e) => setCourseFilter(e.target.value)}
-            className="border border-input bg-card rounded-md px-3 py-2 text-sm"
+            className="border border-border bg-card text-foreground px-3 py-2 text-sm"
           >
             <option value="">Alle kurs</option>
             {courses?.map((c) => (
@@ -62,7 +68,7 @@ export default function Archive() {
           <select
             value={yearFilter}
             onChange={(e) => setYearFilter(e.target.value)}
-            className="border border-input bg-card rounded-md px-3 py-2 text-sm"
+            className="border border-border bg-card text-foreground px-3 py-2 text-sm"
           >
             <option value="">Alle år</option>
             {years.map((y) => (
@@ -73,29 +79,35 @@ export default function Archive() {
 
         {isLoading && <p className="text-muted-foreground">Laster...</p>}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered?.map((run) => {
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {filtered?.map((run, i) => {
             const media = (run.media as unknown as MediaItem[]) || [];
             const firstImage = media.find((m) => m.type === "image");
             const courseData = run.courses as unknown as { title: string; slug: string } | null;
             return (
-              <Link key={run.id} to={`/arkiv/${run.id}`} className="group">
-                <div className="bg-card rounded-lg overflow-hidden border border-border hover:border-primary/40 transition-colors h-full">
-                  <div className="aspect-video bg-muted overflow-hidden">
+              <Link key={run.id} to={`/arkiv/${run.id}`} className={`group ${getSpan(i)}`}>
+                <div className="bg-card border border-border hover:border-primary/40 transition-all overflow-hidden h-full relative">
+                  <div className={`bg-secondary overflow-hidden ${getSpan(i).includes("row-span-2") ? "aspect-square" : "aspect-video"}`}>
                     {firstImage ? (
                       <img
                         src={firstImage.url}
                         alt={courseData?.title || "Kurs"}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-muted-foreground">
                         <Calendar className="h-10 w-10" strokeWidth={1} />
                       </div>
                     )}
+                    {/* Badge overlay */}
+                    {run.passed_count != null && run.participants_count != null && (
+                      <div className="absolute top-3 right-3 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 uppercase tracking-wider">
+                        {run.passed_count}/{run.participants_count} bestått
+                      </div>
+                    )}
                   </div>
                   <div className="p-4">
-                    <h3 className="font-semibold mb-2">{courseData?.title || "Kurs"}</h3>
+                    <h3 className="font-semibold mb-2" style={{ fontFamily: 'Oswald, sans-serif' }}>{courseData?.title || "Kurs"}</h3>
                     <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
                       {run.location_text && (
                         <span className="flex items-center gap-1">
@@ -106,18 +118,6 @@ export default function Archive() {
                         <span className="flex items-center gap-1">
                           <Calendar className="h-3.5 w-3.5" />
                           {run.date_label || format(new Date(run.date_start), "d. MMM yyyy", { locale: nb })}
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex gap-4 mt-2 text-sm text-muted-foreground">
-                      {run.participants_count != null && (
-                        <span className="flex items-center gap-1">
-                          <Users className="h-3.5 w-3.5" /> {run.participants_count} deltakere
-                        </span>
-                      )}
-                      {run.passed_count != null && (
-                        <span className="flex items-center gap-1">
-                          <CheckCircle className="h-3.5 w-3.5" /> {run.passed_count} bestått
                         </span>
                       )}
                     </div>

@@ -162,7 +162,7 @@ export default function Index() {
                         </span>
                         <p className="text-muted-foreground text-sm mb-4">{course.short_description}</p>
                         <div className="flex gap-2 flex-wrap mb-4">
-                          {course.languages.map((l) => (
+                          {(course.languages ?? []).map((l) => (
                             <span key={l} className="text-[10px] uppercase tracking-wider text-muted-foreground border border-border px-2 py-0.5">
                               {languageLabels[l] ?? l}
                             </span>

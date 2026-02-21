@@ -1,0 +1,2 @@
+ALTER TABLE public.course_categories ADD COLUMN icon_type text NOT NULL DEFAULT 'other';
+COMMENT ON COLUMN public.course_categories.icon_type IS 'One of: truck, machine, crane, lift, fall_protection, rigging, other';

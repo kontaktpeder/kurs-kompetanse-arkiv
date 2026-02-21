@@ -24,6 +24,16 @@ interface Category {
   updated_at: string;
 }
 
+const ICON_TYPES = [
+  { value: "truck", label: "Truck" },
+  { value: "machine", label: "Maskin / anleggsmaskin" },
+  { value: "crane", label: "Kran" },
+  { value: "lift", label: "Lift / personløfter" },
+  { value: "fall_protection", label: "Fallsikring" },
+  { value: "rigging", label: "Stropp & anhuker" },
+  { value: "other", label: "Annet" },
+];
+
 const emptyForm = {
   name: "",
   slug: "",
@@ -31,6 +41,7 @@ const emptyForm = {
   sort_order: 100,
   icon_size_px: 72,
   icon_plate_variant: "dark" as string,
+  icon_type: "other" as string,
 };
 
 export default function AdminCategories() {
@@ -62,6 +73,7 @@ export default function AdminCategories() {
         sort_order: form.sort_order,
         icon_size_px: form.icon_size_px,
         icon_plate_variant: form.icon_plate_variant,
+        icon_type: form.icon_type,
       };
       if (editing) {
         const { error } = await supabase
@@ -119,6 +131,7 @@ export default function AdminCategories() {
       sort_order: c.sort_order,
       icon_size_px: (c as any).icon_size_px ?? 72,
       icon_plate_variant: (c as any).icon_plate_variant ?? "dark",
+      icon_type: (c as any).icon_type ?? "other",
     });
     setOpen(true);
   };
@@ -229,7 +242,7 @@ export default function AdminCategories() {
                   {!c.is_active && <span className="text-xs text-destructive">Inaktiv</span>}
                 </div>
                 <div className="text-xs text-muted-foreground mt-0.5">
-                  /{c.slug} · Rekkefølge: {c.sort_order}
+                  /{c.slug} · Rekkefølge: {c.sort_order} · Type: {ICON_TYPES.find(t => t.value === (c as any).icon_type)?.label || "Annet"}
                 </div>
               </div>
             </div>
@@ -318,6 +331,21 @@ export default function AdminCategories() {
                   </SelectContent>
                 </Select>
               </div>
+            </div>
+
+            {/* Icon type */}
+            <div>
+              <label className="text-sm font-medium mb-1 block">Ikon-type</label>
+              <Select value={form.icon_type} onValueChange={(v) => update("icon_type", v)}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {ICON_TYPES.map((t) => (
+                    <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             {editing && (

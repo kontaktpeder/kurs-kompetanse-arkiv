@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useSearchParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,7 +7,19 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { languageLabels } from "@/lib/types";
 import { toast } from "sonner";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, ChevronDown } from "lucide-react";
+import IconPlate from "@/components/icons/IconPlate";
+
+interface CourseOption {
+  id: string;
+  title: string;
+  category_slug: string | null;
+  category?: {
+    icon_svg: string | null;
+    icon_png_url: string | null;
+    icon_plate_variant: string;
+  } | null;
+}
 
 export default function Inquiry() {
   const [searchParams] = useSearchParams();
@@ -15,6 +27,8 @@ export default function Inquiry() {
 
   const [submitted, setSubmitted] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const [form, setForm] = useState({
     course_id: preselectedCourse,
     name: "",
@@ -29,13 +43,31 @@ export default function Inquiry() {
   });
 
   const { data: courses } = useQuery({
-    queryKey: ["public-courses"],
+    queryKey: ["public-courses-inquiry"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("courses").select("id, title").order("title");
+      const { data, error } = await supabase.from("courses").select("id, title, category_slug").order("title");
       if (error) throw error;
-      return data;
+      const { data: cats } = await supabase
+        .from("course_categories" as any)
+        .select("slug, icon_svg, icon_png_url, icon_plate_variant");
+      const catMap = new Map((cats as any[] || []).map((c: any) => [c.slug, c]));
+      return (data || []).map((c: any): CourseOption => ({
+        ...c,
+        category: catMap.get(c.category_slug) || null,
+      }));
     },
   });
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -60,6 +92,8 @@ export default function Inquiry() {
 
   const update = (key: string, value: string) => setForm((f) => ({ ...f, [key]: value }));
 
+  const selectedCourse = courses?.find((c) => c.id === form.course_id);
+
   if (submitted) {
     return (
       <div className="py-20 px-4">
@@ -81,18 +115,69 @@ export default function Inquiry() {
         </p>
 
         <div className="bg-secondary border border-border p-6 space-y-4">
+          {/* Custom course dropdown with icons */}
           <div>
             <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Kurs</label>
-            <select
-              value={form.course_id}
-              onChange={(e) => update("course_id", e.target.value)}
-              className="w-full border border-border bg-background text-foreground px-3 py-2 text-sm"
-            >
-              <option value="">Velg kurs (valgfritt)</option>
-              {courses?.map((c) => (
-                <option key={c.id} value={c.id}>{c.title}</option>
-              ))}
-            </select>
+            <div className="relative" ref={dropdownRef}>
+              <button
+                type="button"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="w-full border border-border bg-background text-foreground px-3 py-2 text-sm text-left flex items-center gap-2 justify-between"
+              >
+                <div className="flex items-center gap-2 min-w-0">
+                  {selectedCourse ? (
+                    <>
+                      {selectedCourse.category && (
+                        <IconPlate
+                          svg={selectedCourse.category.icon_svg}
+                          pngUrl={selectedCourse.category.icon_png_url}
+                          sizePx={28}
+                          variant={selectedCourse.category.icon_plate_variant as "dark" | "yellow" || "dark"}
+                          className="rounded-[3px] shrink-0"
+                        />
+                      )}
+                      <span className="truncate">{selectedCourse.title}</span>
+                    </>
+                  ) : (
+                    <span className="text-muted-foreground">Velg kurs (valgfritt)</span>
+                  )}
+                </div>
+                <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
+              </button>
+
+              {dropdownOpen && (
+                <div className="absolute z-50 mt-1 w-full bg-background border border-border shadow-lg max-h-64 overflow-y-auto">
+                  <button
+                    type="button"
+                    onClick={() => { update("course_id", ""); setDropdownOpen(false); }}
+                    className="w-full px-3 py-2 text-sm text-left text-muted-foreground hover:bg-secondary transition-colors"
+                  >
+                    Velg kurs (valgfritt)
+                  </button>
+                  {courses?.map((c) => (
+                    <button
+                      key={c.id}
+                      type="button"
+                      onClick={() => { update("course_id", c.id); setDropdownOpen(false); }}
+                      className={`w-full px-3 py-2 text-sm text-left flex items-center gap-2 hover:bg-secondary transition-colors ${
+                        form.course_id === c.id ? "bg-secondary" : ""
+                      }`}
+                    >
+                      {c.category && (
+                        <IconPlate
+                          svg={c.category.icon_svg}
+                          pngUrl={c.category.icon_png_url}
+                          sizePx={24}
+                          variant={c.category.icon_plate_variant as "dark" | "yellow" || "dark"}
+                          className="rounded-[2px] shrink-0"
+                        />
+                      )}
+                      <span className="truncate">{c.title}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <div>

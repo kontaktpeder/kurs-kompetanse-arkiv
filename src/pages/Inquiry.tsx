@@ -79,7 +79,7 @@ export default function Inquiry() {
           Fyll ut skjemaet, så tar vi kontakt med et tilpasset tilbud
         </p>
 
-        <div className="bg-card border border-border p-6 space-y-4">
+        <div className="bg-secondary border border-border p-6 space-y-4">
           <div>
             <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Kurs</label>
             <select

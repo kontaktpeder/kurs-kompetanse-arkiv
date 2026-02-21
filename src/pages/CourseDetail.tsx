@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { courseTypeLabels, languageLabels, type MediaItem } from "@/lib/types";
 import { getIcon } from "@/lib/icons";
 import { MapPin, Calendar, Users, Star, Clock, FileText, Shield, Globe } from "lucide-react";
@@ -31,10 +32,10 @@ function SectionHeading({ id, children }: { id?: string; children: React.ReactNo
 function BulletList({ text }: { text: string }) {
   const items = text.split("\n").map((l) => l.trim()).filter(Boolean);
   return (
-    <ul className="space-y-2 list-none">
+    <ul className="space-y-3 list-none">
       {items.map((item, i) => (
-        <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground leading-relaxed">
-          <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary shrink-0" />
+        <li key={i} className="flex items-start gap-3 text-base text-muted-foreground leading-relaxed">
+          <span className="mt-2.5 h-1.5 w-1.5 rounded-full bg-primary shrink-0" />
           {item}
         </li>
       ))}
@@ -45,11 +46,11 @@ function BulletList({ text }: { text: string }) {
 function SmartText({ text }: { text: string }) {
   const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
   if (lines.length > 1) return <BulletList text={text} />;
-  return <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">{text}</p>;
+  return <p className="text-base text-muted-foreground leading-relaxed whitespace-pre-wrap">{text}</p>;
 }
 
 function PreservedText({ text }: { text: string }) {
-  return <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">{text}</p>;
+  return <p className="text-base text-muted-foreground leading-relaxed whitespace-pre-wrap">{text}</p>;
 }
 
 /* ── main component ── */
@@ -217,17 +218,32 @@ export default function CourseDetail() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
             {/* Left: open flat sections */}
             <div className="lg:col-span-2">
-              {sections.map(({ id, title, content, render }, index) => (
-                <div key={id}>
-                  {index > 0 && <SectionDivider />}
-                  <div className="scroll-mt-28" id={id}>
-                    <SectionHeading>{title}</SectionHeading>
-                    {render === "bullets" && <BulletList text={content!} />}
-                    {render === "smart" && <SmartText text={content!} />}
-                    {render === "text" && <PreservedText text={content!} />}
-                  </div>
-                </div>
-              ))}
+              <Accordion type="multiple" defaultValue={["laeringsmal"]} className="space-y-0">
+                {sections.map(({ id, title, content, render }) => (
+                  <AccordionItem
+                    key={id}
+                    value={id}
+                    className="border-b border-border/30 border-t-0 border-x-0 py-0 scroll-mt-28"
+                    id={id}
+                  >
+                    <AccordionTrigger
+                      className="py-5 hover:no-underline"
+                    >
+                      <span
+                        className="text-base font-bold uppercase tracking-wider text-left"
+                        style={{ fontFamily: "Oswald, sans-serif" }}
+                      >
+                        {title}
+                      </span>
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-8 pt-0">
+                      {render === "bullets" && <BulletList text={content!} />}
+                      {render === "smart" && <SmartText text={content!} />}
+                      {render === "text" && <PreservedText text={content!} />}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
             </div>
 
             {/* Right: CTA panel – the only "card" */}

@@ -100,7 +100,15 @@ export default function AdminCourses() {
   };
 
   const closeDialog = () => { setOpen(false); setEditing(null); };
-  const update = (key: string, value: any) => setForm((f) => ({ ...f, [key]: value }));
+  const toSlug = (s: string) =>
+    s.toLowerCase().replace(/æ/g,"ae").replace(/ø/g,"oe").replace(/å/g,"aa").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+  const update = (key: string, value: any) => {
+    setForm((f) => {
+      const next = { ...f, [key]: value };
+      if (key === "title" && !editing) next.slug = toSlug(value as string);
+      return next;
+    });
+  };
   const toggleLang = (lang: string) => {
     setForm((f) => ({
       ...f,

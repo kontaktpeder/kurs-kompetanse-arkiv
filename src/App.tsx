@@ -26,6 +26,8 @@ import AdminSettings from "./pages/admin/AdminSettings";
 import AdminLegal from "./pages/admin/AdminLegal";
 import AdminHeroSlides from "./pages/admin/AdminHeroSlides";
 import AdminCategories from "./pages/admin/AdminCategories";
+import AdminInnhold from "./pages/admin/AdminInnhold";
+import OmOss from "./pages/OmOss";
 import LegalPage from "./pages/LegalPage";
 import NotFound from "./pages/NotFound";
 
@@ -47,6 +49,7 @@ const App = () => (
               <Route path="/kurs/:slug" element={<CourseDetail />} />
               <Route path="/arkiv" element={<Archive />} />
               <Route path="/arkiv/:id" element={<ArchiveDetail />} />
+              <Route path="/om-oss" element={<OmOss />} />
               <Route path="/foresporsel" element={<Inquiry />} />
               <Route path="/:slug" element={<LegalPage />} />
             </Route>
@@ -73,6 +76,7 @@ const App = () => (
               <Route path="/admin/juridisk" element={<AdminLegal />} />
               <Route path="/admin/hero" element={<AdminHeroSlides />} />
               <Route path="/admin/kategorier" element={<AdminCategories />} />
+              <Route path="/admin/innhold" element={<AdminInnhold />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />

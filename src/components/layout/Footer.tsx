@@ -18,6 +18,7 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               <li><Link to="/kurs" className="text-muted-foreground hover:text-primary transition-colors">Kurs</Link></li>
               <li><Link to="/arkiv" className="text-muted-foreground hover:text-primary transition-colors">Arkiv</Link></li>
+              <li><Link to="/om-oss" className="text-muted-foreground hover:text-primary transition-colors">Om oss</Link></li>
               <li><Link to="/foresporsel" className="text-muted-foreground hover:text-primary transition-colors">Send forespørsel</Link></li>
               <li><Link to="/personvern" className="text-muted-foreground hover:text-primary transition-colors">Personvern</Link></li>
               <li><Link to="/vilkar" className="text-muted-foreground hover:text-primary transition-colors">Vilkår</Link></li>

@@ -112,8 +112,10 @@ export type Database = {
           created_at: string
           description: string | null
           duration: string | null
+          hero_image_url: string | null
           icon_key: string | null
           id: string
+          image_url: string | null
           is_active: boolean
           is_featured: boolean
           languages: string[]
@@ -137,8 +139,10 @@ export type Database = {
           created_at?: string
           description?: string | null
           duration?: string | null
+          hero_image_url?: string | null
           icon_key?: string | null
           id?: string
+          image_url?: string | null
           is_active?: boolean
           is_featured?: boolean
           languages?: string[]
@@ -162,8 +166,10 @@ export type Database = {
           created_at?: string
           description?: string | null
           duration?: string | null
+          hero_image_url?: string | null
           icon_key?: string | null
           id?: string
+          image_url?: string | null
           is_active?: boolean
           is_featured?: boolean
           languages?: string[]
@@ -347,6 +353,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      site_settings: {
+        Row: {
+          created_at: string
+          home_hero_cta_primary_href: string | null
+          home_hero_cta_primary_label: string | null
+          home_hero_cta_secondary_href: string | null
+          home_hero_cta_secondary_label: string | null
+          home_hero_image_url: string | null
+          home_hero_subtitle: string | null
+          home_hero_title: string | null
+          id: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          home_hero_cta_primary_href?: string | null
+          home_hero_cta_primary_label?: string | null
+          home_hero_cta_secondary_href?: string | null
+          home_hero_cta_secondary_label?: string | null
+          home_hero_image_url?: string | null
+          home_hero_subtitle?: string | null
+          home_hero_title?: string | null
+          id?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          home_hero_cta_primary_href?: string | null
+          home_hero_cta_primary_label?: string | null
+          home_hero_cta_secondary_href?: string | null
+          home_hero_cta_secondary_label?: string | null
+          home_hero_image_url?: string | null
+          home_hero_subtitle?: string | null
+          home_hero_title?: string | null
+          id?: number
+          updated_at?: string
+        }
+        Relationships: []
       }
     }
     Views: {

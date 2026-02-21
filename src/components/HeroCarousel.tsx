@@ -6,12 +6,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 interface Slide {
   id: string;
   image_url: string;
-  title: string | null;
-  subtitle: string | null;
-  cta_primary_label: string | null;
-  cta_primary_href: string | null;
-  cta_secondary_label: string | null;
-  cta_secondary_href: string | null;
 }
 
 interface HeroCarouselProps {
@@ -79,8 +73,7 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
     return () => window.removeEventListener("keydown", handler);
   }, [prev, next]);
 
-  const slide = slides[current];
-  if (!slide) return null;
+  if (!slides[current]) return null;
 
   const microLabel = microLabels[current % microLabels.length];
 
@@ -90,7 +83,7 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* Background images – all preloaded, only active visible */}
+      {/* Background images – pushed right */}
       {slides.map((s, i) => (
         <div
           key={s.id}
@@ -102,22 +95,22 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
         >
           <img
             src={s.image_url}
-            alt={s.title || ""}
+            alt=""
             className="w-full h-full object-cover"
-            style={{ objectPosition: "50% 15%" }}
+            style={{ objectPosition: "70% 15%" }}
           />
         </div>
       ))}
 
-      {/* Overlays – hard industrial gradient */}
+      {/* Overlays – hard industrial gradient, stronger on left for text */}
       <div className="absolute inset-0 z-[2]" style={{
-        background: "linear-gradient(to right, hsl(var(--background)) 0%, hsl(var(--background) / 0.85) 35%, hsl(var(--background) / 0.4) 65%, transparent 100%)",
+        background: "linear-gradient(to right, hsl(var(--background)) 0%, hsl(var(--background) / 0.92) 30%, hsl(var(--background) / 0.5) 55%, hsl(var(--background) / 0.15) 80%, transparent 100%)",
       }} />
       <div className="absolute inset-0 z-[2]" style={{
         background: "linear-gradient(to top, hsl(var(--background)) 0%, transparent 40%)",
       }} />
 
-      {/* Content */}
+      {/* Content – hardcoded, does not change per slide */}
       <div className="relative z-10 h-full min-h-[50vh] lg:min-h-[70vh] flex items-end">
         <div className="w-full px-6 sm:px-12 lg:px-20 pb-16 lg:pb-20 pt-32">
           <div className="max-w-[720px]">
@@ -126,41 +119,33 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
               {microLabel}
             </p>
 
-            {/* Title */}
-            {slide.title && (
-              <h1
-                className="font-bold leading-[0.92] mb-3"
-                style={{
-                  fontFamily: "Oswald, sans-serif",
-                  fontSize: "clamp(40px, 5vw, 80px)",
-                }}
-              >
-                {slide.title}
-              </h1>
-            )}
+            {/* Title – hardcoded */}
+            <h1
+              className="font-bold leading-[0.92] mb-3"
+              style={{
+                fontFamily: "Oswald, sans-serif",
+                fontSize: "clamp(40px, 5vw, 80px)",
+              }}
+            >
+              Kurs som gir<br />kompetanse
+            </h1>
 
             {/* Yellow accent line */}
             <div className="h-[3px] w-20 bg-primary mb-5" />
 
-            {/* Subtitle */}
-            {slide.subtitle && (
-              <p className="text-muted-foreground text-lg sm:text-xl max-w-lg mb-8 leading-relaxed">
-                {slide.subtitle}
-              </p>
-            )}
+            {/* Subtitle – hardcoded */}
+            <p className="text-muted-foreground text-lg sm:text-xl max-w-lg mb-8 leading-relaxed">
+              Sertifisert og dokumentert opplæring – på norsk, engelsk og tegnspråk.
+            </p>
 
-            {/* CTAs */}
+            {/* CTAs – hardcoded */}
             <div className="flex flex-col sm:flex-row gap-3">
-              {slide.cta_primary_label && slide.cta_primary_href && (
-                <Button asChild size="lg" className="h-14 px-10 text-base">
-                  <Link to={slide.cta_primary_href}>{slide.cta_primary_label}</Link>
-                </Button>
-              )}
-              {slide.cta_secondary_label && slide.cta_secondary_href && (
-                <Button asChild size="lg" variant="outline" className="h-14 px-10 text-base">
-                  <Link to={slide.cta_secondary_href}>{slide.cta_secondary_label}</Link>
-                </Button>
-              )}
+              <Button asChild size="lg" className="h-14 px-10 text-base">
+                <Link to="/kurs">Se kurs</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="h-14 px-10 text-base">
+                <Link to="/foresporsel">Send forespørsel</Link>
+              </Button>
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
-  LayoutDashboard, BookOpen, Calendar, Inbox, Star, HelpCircle, Users, LogOut, Settings, Scale, Image, Tags,
+  LayoutDashboard, BookOpen, Calendar, Inbox, Star, HelpCircle, Users, LogOut, Settings, Scale, Image, Tags, FileText,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -14,6 +14,7 @@ const adminNav = [
   { title: "Anmeldelser", path: "/admin/anmeldelser", icon: Star },
   { title: "FAQ", path: "/admin/faq", icon: HelpCircle },
   { title: "Kursholdere", path: "/admin/kursholdere", icon: Users },
+  { title: "Innhold", path: "/admin/innhold", icon: FileText },
   { title: "Hero Slides", path: "/admin/hero", icon: Image },
   { title: "Juridisk", path: "/admin/juridisk", icon: Scale },
   { title: "Innstillinger", path: "/admin/innstillinger", icon: Settings },

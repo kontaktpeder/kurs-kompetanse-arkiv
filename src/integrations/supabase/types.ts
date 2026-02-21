@@ -83,6 +83,47 @@ export type Database = {
         }
         Relationships: []
       }
+      course_delivery_options: {
+        Row: {
+          course_id: string
+          created_at: string
+          id: string
+          is_available: boolean
+          notes: string | null
+          option_key: string
+          option_label: string
+          updated_at: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          id?: string
+          is_available?: boolean
+          notes?: string | null
+          option_key: string
+          option_label: string
+          updated_at?: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          id?: string
+          is_available?: boolean
+          notes?: string | null
+          option_key?: string
+          option_label?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_delivery_options_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       course_runs: {
         Row: {
           client_label: string | null
@@ -529,6 +570,45 @@ export type Database = {
           home_hero_subtitle?: string | null
           home_hero_title?: string | null
           id?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      team_members: {
+        Row: {
+          bio: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          photo_url: string | null
+          skills: string[]
+          sort_order: number
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          photo_url?: string | null
+          skills?: string[]
+          sort_order?: number
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          photo_url?: string | null
+          skills?: string[]
+          sort_order?: number
+          title?: string | null
           updated_at?: string
         }
         Relationships: []

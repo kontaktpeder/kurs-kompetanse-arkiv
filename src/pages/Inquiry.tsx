@@ -161,9 +161,9 @@ export default function Inquiry() {
             />
             <span>
               Jeg har lest og godtar{" "}
-              <Link to="/vilkar" className="text-primary underline hover:no-underline" target="_blank">vilkår</Link>
+              <Link to="/vilkar" className="text-primary underline hover:no-underline">vilkår</Link>
               {" "}og{" "}
-              <Link to="/personvern" className="text-primary underline hover:no-underline" target="_blank">personvern</Link>
+              <Link to="/personvern" className="text-primary underline hover:no-underline">personvern</Link>
             </span>
           </label>
 

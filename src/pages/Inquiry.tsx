@@ -64,7 +64,7 @@ export default function Inquiry() {
       <div className="py-20 px-4">
         <div className="max-w-lg mx-auto text-center">
           <CheckCircle className="h-16 w-16 text-primary mx-auto mb-6" strokeWidth={1.5} />
-          <h1 className="text-3xl font-bold mb-4">Takk for din forespørsel!</h1>
+          <h1 className="text-4xl font-bold mb-4">Takk for din forespørsel!</h1>
           <p className="text-muted-foreground">Vi tar kontakt med deg så snart som mulig med et tilpasset tilbud.</p>
         </div>
       </div>
@@ -74,18 +74,18 @@ export default function Inquiry() {
   return (
     <div className="py-12 px-4">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2">Send forespørsel</h1>
+        <h1 className="text-4xl font-bold mb-2">Send forespørsel</h1>
         <p className="text-muted-foreground mb-8">
           Fyll ut skjemaet, så tar vi kontakt med et tilpasset tilbud
         </p>
 
-        <div className="bg-card border border-border rounded-lg p-6 space-y-4">
+        <div className="bg-card border border-border p-6 space-y-4">
           <div>
-            <label className="text-sm font-medium mb-1 block">Kurs</label>
+            <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Kurs</label>
             <select
               value={form.course_id}
               onChange={(e) => update("course_id", e.target.value)}
-              className="w-full border border-input bg-background rounded-md px-3 py-2 text-sm"
+              className="w-full border border-border bg-background text-foreground px-3 py-2 text-sm"
             >
               <option value="">Velg kurs (valgfritt)</option>
               {courses?.map((c) => (
@@ -95,39 +95,39 @@ export default function Inquiry() {
           </div>
 
           <div>
-            <label className="text-sm font-medium mb-1 block">Navn *</label>
+            <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Navn *</label>
             <Input value={form.name} onChange={(e) => update("name", e.target.value)} required />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-medium mb-1 block">E-post</label>
+              <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">E-post</label>
               <Input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} />
             </div>
             <div>
-              <label className="text-sm font-medium mb-1 block">Telefon</label>
+              <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Telefon</label>
               <Input value={form.phone} onChange={(e) => update("phone", e.target.value)} />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-medium mb-1 block">Bedrift</label>
+              <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Bedrift</label>
               <Input value={form.company} onChange={(e) => update("company", e.target.value)} />
             </div>
             <div>
-              <label className="text-sm font-medium mb-1 block">Antall deltakere (ca.)</label>
+              <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Antall deltakere (ca.)</label>
               <Input type="number" value={form.participants_estimate} onChange={(e) => update("participants_estimate", e.target.value)} />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-medium mb-1 block">Foretrukket språk</label>
+              <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Foretrukket språk</label>
               <select
                 value={form.language_preference}
                 onChange={(e) => update("language_preference", e.target.value)}
-                className="w-full border border-input bg-background rounded-md px-3 py-2 text-sm"
+                className="w-full border border-border bg-background text-foreground px-3 py-2 text-sm"
               >
                 <option value="">Velg språk</option>
                 {Object.entries(languageLabels).map(([k, v]) => (
@@ -136,18 +136,18 @@ export default function Inquiry() {
               </select>
             </div>
             <div>
-              <label className="text-sm font-medium mb-1 block">Ønsket tidspunkt</label>
+              <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Ønsket tidspunkt</label>
               <Input value={form.desired_timeframe} onChange={(e) => update("desired_timeframe", e.target.value)} placeholder="f.eks. Mars 2026" />
             </div>
           </div>
 
           <div>
-            <label className="text-sm font-medium mb-1 block">Sted</label>
+            <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Sted</label>
             <Input value={form.location_text} onChange={(e) => update("location_text", e.target.value)} placeholder="Hvor skal kurset holdes?" />
           </div>
 
           <div>
-            <label className="text-sm font-medium mb-1 block">Melding</label>
+            <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Melding</label>
             <Textarea value={form.message} onChange={(e) => update("message", e.target.value)} placeholder="Eventuelle ønsker eller spørsmål..." rows={4} />
           </div>
 

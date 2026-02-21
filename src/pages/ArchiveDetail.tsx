@@ -69,10 +69,12 @@ export default function ArchiveDetail() {
       <div className="max-w-4xl mx-auto">
         {/* Breadcrumb */}
         <div className="text-sm text-muted-foreground mb-8">
-          <Link to="/arkiv" className="hover:text-primary">Arkiv</Link> / {courseData?.title || "Gjennomføring"}
+          <Link to="/arkiv" className="hover:text-primary">Arkiv</Link>
+          <span className="mx-2">/</span>
+          <span className="text-foreground">{courseData?.title || "Gjennomføring"}</span>
         </div>
 
-        <h1 className="text-3xl font-bold mb-2">{courseData?.title || "Kursgjennomføring"}</h1>
+        <h1 className="text-4xl font-bold mb-2">{courseData?.title || "Kursgjennomføring"}</h1>
         {run.client_label && <p className="text-lg text-muted-foreground mb-6">{run.client_label}</p>}
 
         {/* Meta */}
@@ -95,7 +97,7 @@ export default function ArchiveDetail() {
             </span>
           )}
           {run.passed_count != null && (
-            <span className="flex items-center gap-2 text-muted-foreground">
+            <span className="flex items-center gap-2 text-primary font-semibold">
               <CheckCircle className="h-4 w-4" /> {run.passed_count} bestått
             </span>
           )}
@@ -103,9 +105,9 @@ export default function ArchiveDetail() {
 
         {/* Gallery */}
         {images.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-8">
             {images.map((img, i) => (
-              <div key={i} className={`rounded-lg overflow-hidden ${i === 0 && images.length > 1 ? "md:col-span-2" : ""}`}>
+              <div key={i} className={`overflow-hidden ${i === 0 && images.length > 1 ? "md:col-span-2" : ""}`}>
                 <img src={img.url} alt={img.alt || "Kursbilde"} className="w-full h-auto object-cover" />
               </div>
             ))}
@@ -114,7 +116,7 @@ export default function ArchiveDetail() {
 
         {/* Summary */}
         {run.summary && (
-          <div className="bg-card border border-border rounded-lg p-6 mb-8">
+          <div className="bg-card border border-border p-6 mb-8">
             <p className="text-foreground leading-relaxed whitespace-pre-wrap">{run.summary}</p>
           </div>
         )}
@@ -129,11 +131,11 @@ export default function ArchiveDetail() {
         )}
 
         {/* Review Form */}
-        <div className="bg-card border border-border rounded-lg p-6">
-          <h2 className="text-xl font-bold mb-4">Gi en anmeldelse</h2>
+        <div className="bg-card border border-border p-6">
+          <h2 className="text-2xl font-bold mb-4">Gi en anmeldelse</h2>
           <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium mb-1 block">Vurdering</label>
+              <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Vurdering</label>
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((n) => (
                   <button key={n} onClick={() => setRating(n)} type="button">
@@ -147,16 +149,16 @@ export default function ArchiveDetail() {
               </div>
             </div>
             <div>
-              <label className="text-sm font-medium mb-1 block">Kommentar</label>
+              <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Kommentar</label>
               <Textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Din opplevelse..." />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium mb-1 block">Navn (valgfritt)</label>
+                <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Navn (valgfritt)</label>
                 <Input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Ditt navn" />
               </div>
               <div>
-                <label className="text-sm font-medium mb-1 block">Bedrift (valgfritt)</label>
+                <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Bedrift (valgfritt)</label>
                 <Input value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Din bedrift" />
               </div>
             </div>

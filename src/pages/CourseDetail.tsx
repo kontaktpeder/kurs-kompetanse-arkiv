@@ -63,22 +63,24 @@ export default function CourseDetail() {
       <div className="max-w-4xl mx-auto">
         {/* Breadcrumb */}
         <div className="text-sm text-muted-foreground mb-8">
-          <Link to="/kurs" className="hover:text-primary">Kurs</Link> / {course.title}
+          <Link to="/kurs" className="hover:text-primary">Kurs</Link>
+          <span className="mx-2">/</span>
+          <span className="text-foreground">{course.title}</span>
         </div>
 
         {/* Header */}
         <div className="flex items-start gap-4 mb-6">
-          <div className="p-3 bg-accent rounded-lg">
+          <div className="p-3 bg-secondary">
             <Icon className="h-8 w-8 text-primary" strokeWidth={1.5} />
           </div>
           <div className="flex-1">
-            <h1 className="text-3xl font-bold mb-2">{course.title}</h1>
+            <h1 className="text-4xl font-bold mb-2">{course.title}</h1>
             <div className="flex flex-wrap items-center gap-3">
-              <span className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded">
+              <span className="text-xs uppercase tracking-wider bg-primary text-primary-foreground px-2 py-0.5">
                 {courseTypeLabels[course.course_type]}
               </span>
               {course.languages.map((l) => (
-                <span key={l} className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">
+                <span key={l} className="text-xs uppercase tracking-wider text-muted-foreground border border-border px-2 py-0.5">
                   {languageLabels[l] ?? l}
                 </span>
               ))}
@@ -92,7 +94,7 @@ export default function CourseDetail() {
         </div>
 
         {/* Description */}
-        <div className="bg-card border border-border rounded-lg p-6 mb-8">
+        <div className="bg-card border border-border p-6 mb-8">
           <p className="text-foreground leading-relaxed whitespace-pre-wrap">
             {course.description || course.short_description}
           </p>
@@ -100,8 +102,8 @@ export default function CourseDetail() {
 
         {/* Offer */}
         {course.offer_is_active && course.offer_title && (
-          <div className="bg-accent border border-primary/20 rounded-lg p-6 mb-8">
-            <h3 className="font-semibold text-lg mb-2">{course.offer_title}</h3>
+          <div className="bg-primary/10 border border-primary/30 p-6 mb-8">
+            <h3 className="font-semibold text-lg mb-2 text-primary" style={{ fontFamily: 'Oswald, sans-serif' }}>{course.offer_title}</h3>
             {course.offer_body && <p className="text-sm text-muted-foreground">{course.offer_body}</p>}
           </div>
         )}
@@ -116,20 +118,20 @@ export default function CourseDetail() {
         {/* Related runs */}
         {runs && runs.length > 0 && (
           <div className="mb-12">
-            <h2 className="text-2xl font-bold mb-6">Gjennomføringer</h2>
+            <h2 className="text-3xl font-bold mb-6">Gjennomføringer</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {runs.map((run) => {
                 const media = (run.media as unknown as MediaItem[]) || [];
                 const firstImage = media.find((m) => m.type === "image");
                 return (
                   <Link key={run.id} to={`/arkiv/${run.id}`} className="group">
-                    <div className="bg-card rounded-lg overflow-hidden border border-border hover:border-primary/40 transition-colors">
+                    <div className="bg-card overflow-hidden border border-border hover:border-primary/40 transition-all">
                       {firstImage && (
                         <div className="aspect-video overflow-hidden">
                           <img
                             src={firstImage.url}
                             alt="Gjennomføring"
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                         </div>
                       )}
@@ -167,10 +169,10 @@ export default function CourseDetail() {
         {/* Reviews */}
         {reviews && reviews.length > 0 && (
           <div>
-            <h2 className="text-2xl font-bold mb-6">Anmeldelser</h2>
+            <h2 className="text-3xl font-bold mb-6">Anmeldelser</h2>
             <div className="space-y-4">
               {reviews.map((review) => (
-                <div key={review.id} className="bg-card border border-border rounded-lg p-5">
+                <div key={review.id} className="bg-card border border-border p-5">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="flex">
                       {Array.from({ length: 5 }).map((_, i) => (

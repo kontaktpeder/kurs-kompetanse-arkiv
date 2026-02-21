@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,7 @@ export default function Inquiry() {
   const preselectedCourse = searchParams.get("kurs") || "";
 
   const [submitted, setSubmitted] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [form, setForm] = useState({
     course_id: preselectedCourse,
     name: "",
@@ -151,9 +152,24 @@ export default function Inquiry() {
             <Textarea value={form.message} onChange={(e) => update("message", e.target.value)} placeholder="Eventuelle ønsker eller spørsmål..." rows={4} />
           </div>
 
+          <label className="flex items-start gap-2 text-sm text-muted-foreground cursor-pointer">
+            <input
+              type="checkbox"
+              checked={acceptedTerms}
+              onChange={(e) => setAcceptedTerms(e.target.checked)}
+              className="mt-0.5"
+            />
+            <span>
+              Jeg har lest og godtar{" "}
+              <Link to="/vilkar" className="text-primary underline hover:no-underline" target="_blank">vilkår</Link>
+              {" "}og{" "}
+              <Link to="/personvern" className="text-primary underline hover:no-underline" target="_blank">personvern</Link>
+            </span>
+          </label>
+
           <Button
             onClick={() => mutation.mutate()}
-            disabled={!form.name.trim() || mutation.isPending}
+            disabled={!form.name.trim() || !acceptedTerms || mutation.isPending}
             size="lg"
             className="w-full"
           >

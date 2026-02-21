@@ -23,6 +23,8 @@ import AdminReviews from "./pages/admin/AdminReviews";
 import AdminFAQs from "./pages/admin/AdminFAQs";
 import AdminInstructors from "./pages/admin/AdminInstructors";
 import AdminSettings from "./pages/admin/AdminSettings";
+import AdminLegal from "./pages/admin/AdminLegal";
+import LegalPage from "./pages/LegalPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +46,7 @@ const App = () => (
               <Route path="/arkiv" element={<Archive />} />
               <Route path="/arkiv/:id" element={<ArchiveDetail />} />
               <Route path="/foresporsel" element={<Inquiry />} />
+              <Route path="/:slug" element={<LegalPage />} />
             </Route>
 
             {/* Auth */}
@@ -65,6 +68,7 @@ const App = () => (
               <Route path="/admin/faq" element={<AdminFAQs />} />
               <Route path="/admin/kursholdere" element={<AdminInstructors />} />
               <Route path="/admin/innstillinger" element={<AdminSettings />} />
+              <Route path="/admin/juridisk" element={<AdminLegal />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />

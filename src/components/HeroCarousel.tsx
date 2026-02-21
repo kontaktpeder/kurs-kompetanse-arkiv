@@ -154,7 +154,7 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
                 src={s.image_url}
                 alt=""
                 className="w-full h-full object-cover"
-                style={{ objectPosition: "center 20%" }}
+                style={{ objectPosition: "center 35%" }}
               />
             </div>
           ))}

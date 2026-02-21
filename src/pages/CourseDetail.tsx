@@ -145,7 +145,7 @@ export default function CourseDetail() {
         {/* Right – Yellow info block */}
         <div className="bg-primary text-primary-foreground flex flex-col justify-center p-8 sm:p-10 lg:p-14 relative overflow-hidden">
           {cat && (
-            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-8 opacity-20">
+            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-8">
               <IconPlate
                 svg={cat.icon_svg}
                 pngUrl={cat.icon_png_url}

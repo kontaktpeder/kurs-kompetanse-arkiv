@@ -29,6 +29,48 @@ export type Database = {
         }
         Relationships: []
       }
+      course_categories: {
+        Row: {
+          created_at: string
+          icon_png_url: string | null
+          icon_svg: string | null
+          icon_svg_url: string | null
+          id: string
+          is_active: boolean
+          is_system: boolean
+          name: string
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          icon_png_url?: string | null
+          icon_svg?: string | null
+          icon_svg_url?: string | null
+          id?: string
+          is_active?: boolean
+          is_system?: boolean
+          name: string
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          icon_png_url?: string | null
+          icon_svg?: string | null
+          icon_svg_url?: string | null
+          id?: string
+          is_active?: boolean
+          is_system?: boolean
+          name?: string
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       course_runs: {
         Row: {
           client_label: string | null
@@ -106,6 +148,7 @@ export type Database = {
       }
       courses: {
         Row: {
+          category_slug: string | null
           certification_info: string | null
           course_structure: string | null
           course_type: Database["public"]["Enums"]["course_type"]
@@ -133,6 +176,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          category_slug?: string | null
           certification_info?: string | null
           course_structure?: string | null
           course_type?: Database["public"]["Enums"]["course_type"]
@@ -160,6 +204,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          category_slug?: string | null
           certification_info?: string | null
           course_structure?: string | null
           course_type?: Database["public"]["Enums"]["course_type"]
@@ -186,7 +231,15 @@ export type Database = {
           title?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "courses_category_slug_fkey"
+            columns: ["category_slug"]
+            isOneToOne: false
+            referencedRelation: "course_categories"
+            referencedColumns: ["slug"]
+          },
+        ]
       }
       faqs: {
         Row: {

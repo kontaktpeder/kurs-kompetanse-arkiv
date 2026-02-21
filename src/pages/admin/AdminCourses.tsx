@@ -18,6 +18,8 @@ const emptyCourse = {
   course_type: "other" as Enums<"course_type">, languages: ["no"], icon_key: "",
   is_active: true, is_featured: false,
   offer_is_active: false, offer_title: "", offer_body: "", offer_expires_at: "",
+  learning_outcomes: "", target_audience: "", course_structure: "",
+  certification_info: "", practical_info: "", duration: "", requirements: "",
 };
 
 export default function AdminCourses() {
@@ -51,6 +53,13 @@ export default function AdminCourses() {
         offer_title: form.offer_title || null,
         offer_body: form.offer_body || null,
         offer_expires_at: form.offer_expires_at || null,
+        learning_outcomes: form.learning_outcomes || null,
+        target_audience: form.target_audience || null,
+        course_structure: form.course_structure || null,
+        certification_info: form.certification_info || null,
+        practical_info: form.practical_info || null,
+        duration: form.duration || null,
+        requirements: form.requirements || null,
       };
       if (editing) {
         const { error } = await supabase.from("courses").update(payload).eq("id", editing.id);
@@ -95,6 +104,10 @@ export default function AdminCourses() {
       icon_key: c.icon_key || "", is_active: c.is_active, is_featured: c.is_featured,
       offer_is_active: c.offer_is_active, offer_title: c.offer_title || "",
       offer_body: c.offer_body || "", offer_expires_at: c.offer_expires_at || "",
+      learning_outcomes: c.learning_outcomes || "", target_audience: c.target_audience || "",
+      course_structure: c.course_structure || "", certification_info: c.certification_info || "",
+      practical_info: c.practical_info || "", duration: c.duration || "",
+      requirements: c.requirements || "",
     });
     setOpen(true);
   };
@@ -150,11 +163,12 @@ export default function AdminCourses() {
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{editing ? "Rediger kurs" : "Nytt kurs"}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
+            {/* Basic info */}
             <div>
               <label className="text-sm font-medium mb-1 block">Tittel *</label>
               <Input value={form.title} onChange={(e) => update("title", e.target.value)} />
@@ -205,6 +219,47 @@ export default function AdminCourses() {
                 <input type="checkbox" checked={form.is_featured} onChange={(e) => update("is_featured", e.target.checked)} /> Fremhevet
               </label>
             </div>
+
+            {/* Structured content */}
+            <hr className="border-border" />
+            <h3 className="text-base font-semibold" style={{ fontFamily: 'Oswald, sans-serif', textTransform: 'uppercase' }}>Innhold (strukturert)</h3>
+
+            <div>
+              <label className="text-sm font-medium mb-1 block">Hva lærer du?</label>
+              <p className="text-xs text-muted-foreground mb-1">Skriv én per linje – vises som punktliste på nettsiden.</p>
+              <Textarea value={form.learning_outcomes} onChange={(e) => update("learning_outcomes", e.target.value)} rows={4} />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1 block">Hvem passer kurset for?</label>
+              <p className="text-xs text-muted-foreground mb-1">Skriv korte setninger eller punkter. (Én per linje hvis ønskelig).</p>
+              <Textarea value={form.target_audience} onChange={(e) => update("target_audience", e.target.value)} rows={3} />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1 block">Gjennomføring</label>
+              <p className="text-xs text-muted-foreground mb-1">Teori/praksis, dag/kveld, hos kunde/hos oss.</p>
+              <Textarea value={form.course_structure} onChange={(e) => update("course_structure", e.target.value)} rows={3} />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1 block">Sertifisering / dokumentasjon</label>
+              <Textarea value={form.certification_info} onChange={(e) => update("certification_info", e.target.value)} rows={2} />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1 block">Praktisk info</label>
+              <p className="text-xs text-muted-foreground mb-1">F.eks. utstyr, krav, tilpasninger, praksiskjøring.</p>
+              <Textarea value={form.practical_info} onChange={(e) => update("practical_info", e.target.value)} rows={3} />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium mb-1 block">Varighet</label>
+                <Input value={form.duration} onChange={(e) => update("duration", e.target.value)} placeholder="F.eks. 1 dag / 2 kvelder / etter avtale" />
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-1 block">Forkunnskaper / krav</label>
+                <Input value={form.requirements} onChange={(e) => update("requirements", e.target.value)} placeholder="F.eks. ingen / ønskelig med…" />
+              </div>
+            </div>
+
+            {/* Offer */}
             <hr className="border-border" />
             <label className="flex items-center gap-2 text-sm">
               <input type="checkbox" checked={form.offer_is_active} onChange={(e) => update("offer_is_active", e.target.checked)} /> Aktivt tilbud

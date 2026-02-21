@@ -145,7 +145,7 @@ export default function CourseDetail() {
         {/* Right – Yellow info block */}
         <div className="bg-primary text-primary-foreground flex flex-col justify-center p-8 sm:p-10 lg:p-14 relative overflow-hidden">
           {cat && (
-            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-8">
+            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-8 hidden sm:block">
               <IconPlate
                 svg={cat.icon_svg}
                 pngUrl={cat.icon_png_url}
@@ -161,15 +161,27 @@ export default function CourseDetail() {
             <span>{course.title}</span>
           </div>
 
-          <h1
-            className="font-bold leading-[0.95] mb-6 relative z-10"
-            style={{
-              fontFamily: "Oswald, sans-serif",
-              fontSize: "clamp(32px, 4.5vw, 64px)",
-            }}
-          >
-            {course.title}
-          </h1>
+          <div className="flex items-start justify-between gap-4 mb-6 relative z-10">
+            <h1
+              className="font-bold leading-[0.95]"
+              style={{
+                fontFamily: "Oswald, sans-serif",
+                fontSize: "clamp(32px, 4.5vw, 64px)",
+              }}
+            >
+              {course.title}
+            </h1>
+            {cat && (
+              <div className="sm:hidden shrink-0">
+                <IconPlate
+                  svg={cat.icon_svg}
+                  pngUrl={cat.icon_png_url}
+                  sizePx={64}
+                  variant="yellow"
+                />
+              </div>
+            )}
+          </div>
 
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider bg-primary-foreground text-primary px-2.5 py-1 font-semibold">

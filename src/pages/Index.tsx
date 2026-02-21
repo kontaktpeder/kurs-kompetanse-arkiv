@@ -6,6 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { getIcon } from "@/lib/icons";
 import { courseTypeLabels, languageLabels, type MediaItem } from "@/lib/types";
 import defaultHeroImage from "@/assets/hero-training.jpg";
+import HeroCarousel from "@/components/HeroCarousel";
 import { MapPin, Calendar, ArrowRight } from "lucide-react";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale";
@@ -51,7 +52,20 @@ export default function Index() {
     },
   });
 
-  // Stats
+  const { data: heroSlides } = useQuery({
+    queryKey: ["hero-slides"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("home_hero_slides")
+        .select("*")
+        .eq("is_active", true)
+        .order("sort_order")
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+
   const { data: totalRuns } = useQuery({
     queryKey: ["stats-total-runs"],
     queryFn: async () => {
@@ -62,56 +76,53 @@ export default function Index() {
   });
 
   const heroImage = siteSettings?.home_hero_image_url || defaultHeroImage;
+  const hasSlides = heroSlides && heroSlides.length > 0;
 
   return (
     <>
-      {/* HERO – Split 60/40 */}
-      <section className="min-h-[80vh] grid grid-cols-1 lg:grid-cols-5">
-        {/* Left – Content */}
-        <div className="lg:col-span-3 flex flex-col justify-center px-6 sm:px-12 lg:px-20 py-20">
-          <p className="text-primary text-sm uppercase tracking-[0.3em] font-semibold mb-6">Sertifisert opplæring</p>
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[0.95] mb-6">
-            Kurs som gir<br />kompetanse
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-md mb-10">
-            Sertifisert og dokumentert opplæring – på norsk, engelsk og tegnspråk.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Button asChild size="lg">
-              <Link to="/kurs">Se kurs</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link to="/foresporsel">Send forespørsel</Link>
-            </Button>
-          </div>
-        </div>
-
-        {/* Right – Image + fact block */}
-        <div className="lg:col-span-2 relative">
-          <img src={heroImage} alt="Kursopplæring" className="w-full h-full object-cover min-h-[400px]" />
-          {/* Yellow fact block */}
-          <div className="absolute bottom-0 left-0 right-0 bg-primary text-primary-foreground p-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div>
-              <div className="text-2xl font-bold" style={{ fontFamily: 'Oswald, sans-serif' }}>2006</div>
-              <div className="text-xs uppercase tracking-wider opacity-80">Siden</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold" style={{ fontFamily: 'Oswald, sans-serif' }}>{totalRuns ?? "—"}</div>
-              <div className="text-xs uppercase tracking-wider opacity-80">Gjennomføringer</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold" style={{ fontFamily: 'Oswald, sans-serif' }}>3</div>
-              <div className="text-xs uppercase tracking-wider opacity-80">Språk</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold" style={{ fontFamily: 'Oswald, sans-serif' }}>98%</div>
-              <div className="text-xs uppercase tracking-wider opacity-80">Bestått</div>
+      {/* HERO */}
+      {hasSlides ? (
+        <HeroCarousel slides={heroSlides} totalRuns={totalRuns} />
+      ) : (
+        /* Fallback static hero */
+        <section className="min-h-[80vh] grid grid-cols-1 lg:grid-cols-5">
+          <div className="lg:col-span-3 flex flex-col justify-center px-6 sm:px-12 lg:px-20 py-20">
+            <p className="text-primary text-sm uppercase tracking-[0.3em] font-semibold mb-6">Sertifisert opplæring</p>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[0.95] mb-6">
+              Kurs som gir<br />kompetanse
+            </h1>
+            <p className="text-muted-foreground text-lg max-w-md mb-10">
+              Sertifisert og dokumentert opplæring – på norsk, engelsk og tegnspråk.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button asChild size="lg">
+                <Link to="/kurs">Se kurs</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link to="/foresporsel">Send forespørsel</Link>
+              </Button>
             </div>
           </div>
-        </div>
-      </section>
+          <div className="lg:col-span-2 relative">
+            <img src={heroImage} alt="Kursopplæring" className="w-full h-full object-cover min-h-[400px]" />
+            <div className="absolute bottom-0 left-0 right-0 bg-primary text-primary-foreground p-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {[
+                { num: "2006", label: "Siden" },
+                { num: totalRuns ?? "—", label: "Gjennomføringer" },
+                { num: "3", label: "Språk" },
+                { num: "98%", label: "Bestått" },
+              ].map((s) => (
+                <div key={s.label}>
+                  <div className="text-2xl font-bold" style={{ fontFamily: 'Oswald, sans-serif' }}>{s.num}</div>
+                  <div className="text-xs uppercase tracking-wider opacity-80">{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
-      {/* STATS – Large numbers */}
+      {/* STATS */}
       <section className="py-20 px-4 border-t border-border">
         <div className="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           {[
@@ -130,7 +141,7 @@ export default function Index() {
         </div>
       </section>
 
-      {/* COURSES – Dark cards with yellow top stripe */}
+      {/* COURSES */}
       {courses && courses.length > 0 && (
         <section className="py-20 px-4 bg-secondary/50">
           <div className="max-w-6xl mx-auto">
@@ -143,8 +154,7 @@ export default function Index() {
                 const Icon = getIcon(course.icon_key);
                 return (
                   <Link key={course.id} to={`/kurs/${course.slug}`} className="group">
-                    <div className="bg-card border border-border hover:border-primary/60 hover:shadow-[0_0_30px_hsl(45_100%_50%/0.08)] transition-all h-full overflow-hidden">
-                      {/* Yellow top stripe */}
+                    <div className="bg-card border border-border hover:border-primary/60 transition-all h-full overflow-hidden">
                       {course.image_url ? (
                         <div className="aspect-[3/1] overflow-hidden">
                           <img src={course.image_url} alt={course.title} className="w-full h-full object-cover" />
@@ -197,17 +207,12 @@ export default function Index() {
                     <div className="bg-card border border-border hover:border-primary/40 transition-all overflow-hidden">
                       <div className="aspect-video bg-secondary overflow-hidden relative">
                         {firstImage ? (
-                          <img
-                            src={firstImage.url}
-                            alt={courseData?.title || "Kurs"}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
+                          <img src={firstImage.url} alt={courseData?.title || "Kurs"} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-muted-foreground">
                             <Calendar className="h-10 w-10" strokeWidth={1} />
                           </div>
                         )}
-                        {/* Badge */}
                         {run.passed_count != null && run.participants_count != null && (
                           <div className="absolute top-3 right-3 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 uppercase tracking-wider">
                             {run.passed_count}/{run.participants_count} bestått
@@ -218,15 +223,10 @@ export default function Index() {
                         <h3 className="font-semibold mb-1" style={{ fontFamily: 'Oswald, sans-serif' }}>{courseData?.title || "Kurs"}</h3>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
                           {run.location_text && (
-                            <span className="flex items-center gap-1">
-                              <MapPin className="h-3.5 w-3.5" /> {run.location_text}
-                            </span>
+                            <span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5" /> {run.location_text}</span>
                           )}
                           {run.date_start && (
-                            <span className="flex items-center gap-1">
-                              <Calendar className="h-3.5 w-3.5" />
-                              {run.date_label || format(new Date(run.date_start), "MMM yyyy", { locale: nb })}
-                            </span>
+                            <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" /> {run.date_label || format(new Date(run.date_start), "MMM yyyy", { locale: nb })}</span>
                           )}
                         </div>
                       </div>
@@ -236,15 +236,13 @@ export default function Index() {
               })}
             </div>
             <div className="text-center mt-10">
-              <Button asChild variant="outline">
-                <Link to="/arkiv">Se alle gjennomføringer</Link>
-              </Button>
+              <Button asChild variant="outline"><Link to="/arkiv">Se alle gjennomføringer</Link></Button>
             </div>
           </div>
         </section>
       )}
 
-      {/* WHY CHOOSE US – Horizontal layout */}
+      {/* WHY CHOOSE US */}
       <section className="py-20 px-4 border-t border-border">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div>
@@ -276,12 +274,8 @@ export default function Index() {
             <Accordion type="single" collapsible className="space-y-2">
               {faqs.map((faq) => (
                 <AccordionItem key={faq.id} value={faq.id} className="bg-card border border-border px-5">
-                  <AccordionTrigger className="text-left font-medium">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground text-sm leading-relaxed">
-                    {faq.answer}
-                  </AccordionContent>
+                  <AccordionTrigger className="text-left font-medium">{faq.question}</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground text-sm leading-relaxed">{faq.answer}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
@@ -289,13 +283,11 @@ export default function Index() {
         </section>
       )}
 
-      {/* CTA – Raw */}
+      {/* CTA */}
       <section className="py-24 px-4 text-center border-t border-primary/20">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-5xl lg:text-6xl font-bold mb-6">Klar for å bestille kurs?</h2>
-          <p className="text-muted-foreground text-lg mb-10">
-            Send oss en forespørsel, så tar vi kontakt med et tilpasset tilbud.
-          </p>
+          <p className="text-muted-foreground text-lg mb-10">Send oss en forespørsel, så tar vi kontakt med et tilpasset tilbud.</p>
           <Button asChild size="lg" className="px-16 h-14 text-lg">
             <Link to="/foresporsel">Send forespørsel</Link>
           </Button>

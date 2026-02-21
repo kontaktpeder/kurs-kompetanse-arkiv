@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Phone, Mail } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -23,10 +24,19 @@ export default function Footer() {
           </div>
           <div>
             <h4 className="text-foreground font-semibold uppercase tracking-wider text-sm mb-3">Kontakt</h4>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Kragerø, Norge<br />
-              post@kurskragero.no
-            </p>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>
+                <a href="tel:+4795044749" className="flex items-center gap-2 hover:text-primary transition-colors">
+                  <Phone className="h-3.5 w-3.5" /> 950 44 749
+                </a>
+              </li>
+              <li>
+                <a href="mailto:lbl@krap.no" className="flex items-center gap-2 hover:text-primary transition-colors">
+                  <Mail className="h-3.5 w-3.5" /> lbl@krap.no
+                </a>
+              </li>
+              <li className="pt-1">Kragerø, Norge</li>
+            </ul>
           </div>
         </div>
         <div className="border-t border-border mt-8 pt-6 text-center text-xs text-muted-foreground">

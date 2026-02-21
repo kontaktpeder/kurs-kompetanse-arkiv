@@ -3,24 +3,71 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import PublicLayout from "@/components/layout/PublicLayout";
+import AdminLayout from "@/components/layout/AdminLayout";
+import AdminRoute from "@/components/layout/AdminRoute";
 import Index from "./pages/Index";
+import Courses from "./pages/Courses";
+import CourseDetail from "./pages/CourseDetail";
+import Archive from "./pages/Archive";
+import ArchiveDetail from "./pages/ArchiveDetail";
+import Inquiry from "./pages/Inquiry";
+import Login from "./pages/Login";
+import Dashboard from "./pages/admin/Dashboard";
+import AdminCourses from "./pages/admin/AdminCourses";
+import AdminCourseRuns from "./pages/admin/AdminCourseRuns";
+import AdminLeads from "./pages/admin/AdminLeads";
+import AdminReviews from "./pages/admin/AdminReviews";
+import AdminFAQs from "./pages/admin/AdminFAQs";
+import AdminInstructors from "./pages/admin/AdminInstructors";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            {/* Public */}
+            <Route element={<PublicLayout />}>
+              <Route path="/" element={<Index />} />
+              <Route path="/kurs" element={<Courses />} />
+              <Route path="/kurs/:slug" element={<CourseDetail />} />
+              <Route path="/arkiv" element={<Archive />} />
+              <Route path="/arkiv/:id" element={<ArchiveDetail />} />
+              <Route path="/foresporsel" element={<Inquiry />} />
+            </Route>
+
+            {/* Auth */}
+            <Route path="/login" element={<Login />} />
+
+            {/* Admin */}
+            <Route
+              element={
+                <AdminRoute>
+                  <AdminLayout />
+                </AdminRoute>
+              }
+            >
+              <Route path="/admin" element={<Dashboard />} />
+              <Route path="/admin/kurs" element={<AdminCourses />} />
+              <Route path="/admin/gjennomforinger" element={<AdminCourseRuns />} />
+              <Route path="/admin/foresporsel" element={<AdminLeads />} />
+              <Route path="/admin/anmeldelser" element={<AdminReviews />} />
+              <Route path="/admin/faq" element={<AdminFAQs />} />
+              <Route path="/admin/kursholdere" element={<AdminInstructors />} />
+            </Route>
+
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 

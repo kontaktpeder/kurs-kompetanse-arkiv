@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { getIcon } from "@/lib/icons";
 import { courseTypeLabels, type MediaItem } from "@/lib/types";
-import heroImage from "@/assets/hero-training.jpg";
+import defaultHeroImage from "@/assets/hero-training.jpg";
 import { MapPin, Calendar, ArrowRight } from "lucide-react";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale";
@@ -42,6 +42,15 @@ export default function Index() {
     },
   });
 
+  const { data: siteSettings } = useQuery({
+    queryKey: ["site-settings"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("site_settings").select("*").eq("id", 1).single();
+      if (error) throw error;
+      return data;
+    },
+  });
+
   // Stats
   const { data: totalRuns } = useQuery({
     queryKey: ["stats-total-runs"],
@@ -51,6 +60,8 @@ export default function Index() {
       return count || 0;
     },
   });
+
+  const heroImage = siteSettings?.home_hero_image_url || defaultHeroImage;
 
   return (
     <>
@@ -134,9 +145,15 @@ export default function Index() {
                   <Link key={course.id} to={`/kurs/${course.slug}`} className="group">
                     <div className="bg-card border border-border hover:border-primary/60 hover:shadow-[0_0_30px_hsl(45_100%_50%/0.08)] transition-all h-full overflow-hidden">
                       {/* Yellow top stripe */}
-                      <div className="h-1 bg-primary" />
+                      {course.image_url ? (
+                        <div className="aspect-[3/1] overflow-hidden">
+                          <img src={course.image_url} alt={course.title} className="w-full h-full object-cover" />
+                        </div>
+                      ) : (
+                        <div className="h-1 bg-primary" />
+                      )}
                       <div className="p-6">
-                        <Icon className="h-7 w-7 text-primary mb-4" strokeWidth={1.5} />
+                        {!course.image_url && <Icon className="h-7 w-7 text-primary mb-4" strokeWidth={1.5} />}
                         <h3 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors" style={{ fontFamily: 'Oswald, sans-serif' }}>
                           {course.title}
                         </h3>

@@ -104,7 +104,20 @@ export default function CourseDetail() {
   ] as const;
 
   return (
-    <div className="py-12 px-4">
+    <div>
+      {/* Hero image */}
+      {(course.hero_image_url || course.image_url) && (
+        <div className="w-full h-64 sm:h-80 lg:h-96 overflow-hidden relative">
+          <img
+            src={course.hero_image_url || course.image_url!}
+            alt={course.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+        </div>
+      )}
+
+      <div className={`px-4 ${course.hero_image_url || course.image_url ? '-mt-20 relative z-10' : 'pt-12'}`}>
       <div className="max-w-5xl mx-auto">
         {/* Breadcrumb */}
         <div className="text-sm text-muted-foreground mb-8">
@@ -293,6 +306,7 @@ export default function CourseDetail() {
             </div>
           </div>
         )}
+      </div>
       </div>
     </div>
   );

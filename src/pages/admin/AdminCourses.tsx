@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { courseTypeLabels, languageLabels } from "@/lib/types";
 import { availableIcons } from "@/lib/icons";
 import { Plus, Pencil, Trash2 } from "lucide-react";
+import MediaUploadField from "@/components/MediaUploadField";
 import type { Tables, Enums } from "@/integrations/supabase/types";
 
 type Course = Tables<"courses">;
@@ -20,6 +21,7 @@ const emptyCourse = {
   offer_is_active: false, offer_title: "", offer_body: "", offer_expires_at: "",
   learning_outcomes: "", target_audience: "", course_structure: "",
   certification_info: "", practical_info: "", duration: "", requirements: "",
+  image_url: "" as string | null, hero_image_url: "" as string | null,
 };
 
 export default function AdminCourses() {
@@ -60,19 +62,28 @@ export default function AdminCourses() {
         practical_info: form.practical_info || null,
         duration: form.duration || null,
         requirements: form.requirements || null,
+        image_url: form.image_url || null,
+        hero_image_url: form.hero_image_url || null,
       };
       if (editing) {
         const { error } = await supabase.from("courses").update(payload).eq("id", editing.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("courses").insert(payload);
+        const { data, error } = await supabase.from("courses").insert(payload).select().single();
         if (error) throw error;
+        // After creating, switch to edit mode so uploads work
+        setEditing(data);
       }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-courses"] });
-      closeDialog();
-      toast.success(editing ? "Kurs oppdatert" : "Kurs opprettet");
+      if (!editing) {
+        // Don't close – user may want to upload images now
+        toast.success("Kurs opprettet – du kan nå laste opp bilder");
+      } else {
+        closeDialog();
+        toast.success("Kurs oppdatert");
+      }
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -88,6 +99,15 @@ export default function AdminCourses() {
     },
     onError: (e: Error) => toast.error(e.message),
   });
+
+  // When image URL changes, also save to DB immediately if editing
+  const handleImageChange = async (field: "image_url" | "hero_image_url", url: string | null) => {
+    setForm((f) => ({ ...f, [field]: url }));
+    if (editing) {
+      await supabase.from("courses").update({ [field]: url }).eq("id", editing.id);
+      queryClient.invalidateQueries({ queryKey: ["admin-courses"] });
+    }
+  };
 
   const openCreate = () => {
     setEditing(null);
@@ -108,6 +128,7 @@ export default function AdminCourses() {
       course_structure: c.course_structure || "", certification_info: c.certification_info || "",
       practical_info: c.practical_info || "", duration: c.duration || "",
       requirements: c.requirements || "",
+      image_url: c.image_url || null, hero_image_url: c.hero_image_url || null,
     });
     setOpen(true);
   };
@@ -143,15 +164,20 @@ export default function AdminCourses() {
       <div className="bg-card border border-border rounded-lg divide-y divide-border">
         {courses?.map((c) => (
           <div key={c.id} className="p-4 flex items-center justify-between">
-            <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <span className="font-medium">{c.title}</span>
-                <span className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded">
-                  {courseTypeLabels[c.course_type]}
-                </span>
-                {!c.is_active && <span className="text-xs text-destructive">Inaktiv</span>}
+            <div className="flex items-center gap-3 flex-1">
+              {c.image_url && (
+                <img src={c.image_url} alt="" className="h-10 w-10 object-cover rounded" />
+              )}
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">{c.title}</span>
+                  <span className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded">
+                    {courseTypeLabels[c.course_type]}
+                  </span>
+                  {!c.is_active && <span className="text-xs text-destructive">Inaktiv</span>}
+                </div>
+                <div className="text-xs text-muted-foreground mt-0.5">/{c.slug} · {c.languages.map(l => languageLabels[l] ?? l).join(", ")}</div>
               </div>
-              <div className="text-xs text-muted-foreground mt-0.5">/{c.slug} · {c.languages.map(l => languageLabels[l] ?? l).join(", ")}</div>
             </div>
             <div className="flex gap-1">
               <Button variant="ghost" size="icon" onClick={() => openEdit(c)}><Pencil className="h-4 w-4" /></Button>
@@ -218,6 +244,30 @@ export default function AdminCourses() {
               <label className="flex items-center gap-2 text-sm">
                 <input type="checkbox" checked={form.is_featured} onChange={(e) => update("is_featured", e.target.checked)} /> Fremhevet
               </label>
+            </div>
+
+            {/* Images */}
+            <hr className="border-border" />
+            <h3 className="text-base font-semibold" style={{ fontFamily: 'Oswald, sans-serif', textTransform: 'uppercase' }}>Bilder</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <MediaUploadField
+                label="Kursbilde (kort/thumbnail)"
+                helperText="Vises på kurskort og i oversikter."
+                value={form.image_url}
+                onChange={(url) => handleImageChange("image_url", url)}
+                folder={editing ? `courses/${editing.id}` : "courses"}
+                filePrefix="thumb"
+                disabled={!editing}
+              />
+              <MediaUploadField
+                label="Hero-bilde (kursdetalj)"
+                helperText="Vises øverst på kurssiden."
+                value={form.hero_image_url}
+                onChange={(url) => handleImageChange("hero_image_url", url)}
+                folder={editing ? `courses/${editing.id}` : "courses"}
+                filePrefix="hero"
+                disabled={!editing}
+              />
             </div>
 
             {/* Structured content */}

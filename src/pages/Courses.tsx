@@ -74,9 +74,15 @@ export default function Courses() {
             return (
               <Link key={course.id} to={`/kurs/${course.slug}`} className="group">
                 <div className="bg-card border border-border hover:border-primary/60 hover:shadow-[0_0_30px_hsl(45_100%_50%/0.08)] transition-all h-full overflow-hidden">
-                  <div className="h-1 bg-primary" />
+                  {course.image_url ? (
+                    <div className="aspect-[3/1] overflow-hidden">
+                      <img src={course.image_url} alt={course.title} className="w-full h-full object-cover" />
+                    </div>
+                  ) : (
+                    <div className="h-1 bg-primary" />
+                  )}
                   <div className="p-6">
-                    <Icon className="h-7 w-7 text-primary mb-4" strokeWidth={1.5} />
+                    {!course.image_url && <Icon className="h-7 w-7 text-primary mb-4" strokeWidth={1.5} />}
                     <h3 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors" style={{ fontFamily: 'Oswald, sans-serif' }}>
                       {course.title}
                     </h3>

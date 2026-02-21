@@ -23,12 +23,6 @@ interface Slide {
 
 const emptyForm = {
   image_url: "",
-  title: "",
-  subtitle: "",
-  cta_primary_label: "",
-  cta_primary_href: "",
-  cta_secondary_label: "",
-  cta_secondary_href: "",
   sort_order: "100",
   is_active: true,
 };
@@ -57,12 +51,6 @@ export default function AdminHeroSlides() {
     mutationFn: async () => {
       const payload = {
         image_url: form.image_url,
-        title: form.title || null,
-        subtitle: form.subtitle || null,
-        cta_primary_label: form.cta_primary_label || null,
-        cta_primary_href: form.cta_primary_href || null,
-        cta_secondary_label: form.cta_secondary_label || null,
-        cta_secondary_href: form.cta_secondary_href || null,
         sort_order: parseInt(form.sort_order) || 100,
         is_active: form.is_active,
       };
@@ -127,12 +115,6 @@ export default function AdminHeroSlides() {
     setCreatedId(s.id);
     setForm({
       image_url: s.image_url || "",
-      title: s.title || "",
-      subtitle: s.subtitle || "",
-      cta_primary_label: s.cta_primary_label || "",
-      cta_primary_href: s.cta_primary_href || "",
-      cta_secondary_label: s.cta_secondary_label || "",
-      cta_secondary_href: s.cta_secondary_href || "",
       sort_order: s.sort_order.toString(),
       is_active: s.is_active,
     });
@@ -194,10 +176,6 @@ export default function AdminHeroSlides() {
             {!slideId ? (
               <>
                 <div>
-                  <label className="text-sm font-medium mb-1 block">Tittel</label>
-                  <Input value={form.title} onChange={(e) => update("title", e.target.value)} placeholder="Hovedtittel (valgfritt)" />
-                </div>
-                <div>
                   <label className="text-sm font-medium mb-1 block">Rekkefølge</label>
                   <Input type="number" value={form.sort_order} onChange={(e) => update("sort_order", e.target.value)} />
                 </div>
@@ -218,37 +196,6 @@ export default function AdminHeroSlides() {
                   folder={`site/home-hero/${slideId}`}
                   filePrefix="hero"
                 />
-
-                <div>
-                  <label className="text-sm font-medium mb-1 block">Tittel</label>
-                  <Input value={form.title} onChange={(e) => update("title", e.target.value)} placeholder="Hovedtittel" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-1 block">Undertekst</label>
-                  <Input value={form.subtitle} onChange={(e) => update("subtitle", e.target.value)} placeholder="Kort undertekst" />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium mb-1 block">Primær CTA tekst</label>
-                    <Input value={form.cta_primary_label} onChange={(e) => update("cta_primary_label", e.target.value)} placeholder="Se kurs" />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium mb-1 block">Primær CTA lenke</label>
-                    <Input value={form.cta_primary_href} onChange={(e) => update("cta_primary_href", e.target.value)} placeholder="/kurs" />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium mb-1 block">Sekundær CTA tekst</label>
-                    <Input value={form.cta_secondary_label} onChange={(e) => update("cta_secondary_label", e.target.value)} placeholder="Send forespørsel" />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium mb-1 block">Sekundær CTA lenke</label>
-                    <Input value={form.cta_secondary_href} onChange={(e) => update("cta_secondary_href", e.target.value)} placeholder="/foresporsel" />
-                  </div>
-                </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>

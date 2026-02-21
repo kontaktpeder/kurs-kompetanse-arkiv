@@ -143,32 +143,33 @@ export default function CourseDetail() {
         </div>
 
         {/* Right – Yellow info block */}
-        <div className="bg-primary text-primary-foreground flex flex-col justify-center p-8 sm:p-10 lg:p-14">
-          <div className="text-sm mb-6 opacity-70">
+        <div className="bg-primary text-primary-foreground flex flex-col justify-center p-8 sm:p-10 lg:p-14 relative overflow-hidden">
+          {cat && (
+            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-8 opacity-20">
+              <IconPlate
+                svg={cat.icon_svg}
+                pngUrl={cat.icon_png_url}
+                sizePx={180}
+                variant="yellow"
+              />
+            </div>
+          )}
+
+          <div className="text-sm mb-6 opacity-70 relative z-10">
             <Link to="/kurs" className="hover:opacity-100 transition-opacity">Kurs</Link>
             <span className="mx-2">/</span>
             <span>{course.title}</span>
           </div>
 
-          <div className="flex items-start gap-5 mb-6">
-            {cat && (
-              <IconPlate
-                svg={cat.icon_svg}
-                pngUrl={cat.icon_png_url}
-                sizePx={112}
-                variant="yellow"
-              />
-            )}
-            <h1
-              className="font-bold leading-[0.95]"
-              style={{
-                fontFamily: "Oswald, sans-serif",
-                fontSize: "clamp(32px, 4.5vw, 64px)",
-              }}
-            >
-              {course.title}
-            </h1>
-          </div>
+          <h1
+            className="font-bold leading-[0.95] mb-6 relative z-10"
+            style={{
+              fontFamily: "Oswald, sans-serif",
+              fontSize: "clamp(32px, 4.5vw, 64px)",
+            }}
+          >
+            {course.title}
+          </h1>
 
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider bg-primary-foreground text-primary px-2.5 py-1 font-semibold">

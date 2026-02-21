@@ -160,9 +160,7 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
           ))}
 
           {/* Subtle left edge blend on desktop */}
-          <div className="hidden lg:block absolute inset-y-0 left-0 w-16 z-[2]" style={{
-            background: "linear-gradient(to right, hsl(var(--background)), transparent)",
-          }} />
+          <div className="hidden lg:block absolute inset-y-0 left-0 w-16 z-[2]" />
 
           {/* Bottom gradient on mobile for text readability */}
           <div className="lg:hidden absolute inset-x-0 bottom-0 h-16 z-[2]" style={{

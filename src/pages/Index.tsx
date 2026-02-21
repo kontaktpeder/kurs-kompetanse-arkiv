@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import CategoryIcon from "@/components/CategoryIcon";
+import IconPlate from "@/components/icons/IconPlate";
 import { courseTypeLabels, languageLabels, type MediaItem } from "@/lib/types";
 import defaultHeroImage from "@/assets/hero-training.jpg";
 import HeroCarousel from "@/components/HeroCarousel";
@@ -17,7 +17,7 @@ export default function Index() {
     queryFn: async () => {
       const { data, error } = await supabase.from("courses").select("*").order("title");
       if (error) throw error;
-      const { data: cats } = await supabase.from("course_categories" as any).select("slug, name, icon_svg, icon_png_url");
+      const { data: cats } = await supabase.from("course_categories" as any).select("slug, name, icon_svg, icon_png_url, icon_size_px, icon_plate, icon_plate_variant");
       const catMap = new Map((cats as any[] || []).map((c: any) => [c.slug, c]));
       return (data || []).map((c: any) => ({ ...c, category: catMap.get(c.category_slug) || null }));
     },
@@ -158,14 +158,20 @@ export default function Index() {
                   <Link key={course.id} to={`/kurs/${course.slug}`} className="group">
                     <div className="bg-card border border-border hover:border-primary/60 transition-all h-full overflow-hidden">
                       {course.image_url ? (
-                        <div className="aspect-[3/1] overflow-hidden">
+                        <div className="aspect-[3/1] overflow-hidden relative">
                           <img src={course.image_url} alt={course.title} className="w-full h-full object-cover" />
+                          {cat && (
+                            <div className="absolute top-3 left-3">
+                              <IconPlate svg={cat.icon_svg} pngUrl={cat.icon_png_url} sizePx={48} variant={cat.icon_plate_variant || "dark"} />
+                            </div>
+                          )}
                         </div>
                       ) : (
-                        <div className="h-1 bg-primary" />
+                        <div className="p-6 pb-0 flex items-start">
+                          <IconPlate svg={cat?.icon_svg} pngUrl={cat?.icon_png_url} sizePx={56} variant={cat?.icon_plate_variant || "dark"} />
+                        </div>
                       )}
                       <div className="p-6">
-                        {!course.image_url && <CategoryIcon iconSvg={cat?.icon_svg} iconPngUrl={cat?.icon_png_url} className="h-7 w-7 text-primary mb-4" />}
                         <h3 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors" style={{ fontFamily: 'Oswald, sans-serif' }}>
                           {course.title}
                         </h3>

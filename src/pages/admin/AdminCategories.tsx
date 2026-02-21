@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Upload, Loader2 } from "lucide-react";
-import CategoryIcon from "@/components/CategoryIcon";
+import IconPlate from "@/components/icons/IconPlate";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ImageTracer from "imagetracerjs";
 
 interface Category {
@@ -28,6 +29,8 @@ const emptyForm = {
   slug: "",
   is_active: true,
   sort_order: 100,
+  icon_size_px: 72,
+  icon_plate_variant: "dark" as string,
 };
 
 export default function AdminCategories() {
@@ -57,6 +60,8 @@ export default function AdminCategories() {
         slug: form.slug.trim(),
         is_active: form.is_active,
         sort_order: form.sort_order,
+        icon_size_px: form.icon_size_px,
+        icon_plate_variant: form.icon_plate_variant,
       };
       if (editing) {
         const { error } = await supabase
@@ -112,6 +117,8 @@ export default function AdminCategories() {
       slug: c.slug,
       is_active: c.is_active,
       sort_order: c.sort_order,
+      icon_size_px: (c as any).icon_size_px ?? 72,
+      icon_plate_variant: (c as any).icon_plate_variant ?? "dark",
     });
     setOpen(true);
   };
@@ -210,7 +217,7 @@ export default function AdminCategories() {
         {categories?.map((c) => (
           <div key={c.id} className="p-4 flex items-center justify-between">
             <div className="flex items-center gap-3 flex-1">
-              <CategoryIcon iconSvg={c.icon_svg} iconPngUrl={c.icon_png_url} className="h-8 w-8" />
+              <IconPlate svg={c.icon_svg} pngUrl={c.icon_png_url} sizePx={64} variant={(c as any).icon_plate_variant || "dark"} />
               <div>
                 <div className="flex items-center gap-2">
                   <span className="font-medium">{c.name}</span>
@@ -289,7 +296,30 @@ export default function AdminCategories() {
               </div>
             </div>
 
-            {/* Icon upload – only for existing categories */}
+            {/* Icon style controls */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium mb-1 block">Ikonstørrelse (px)</label>
+                <Input
+                  type="number"
+                  value={form.icon_size_px}
+                  onChange={(e) => update("icon_size_px", parseInt(e.target.value) || 72)}
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-1 block">Plate-variant</label>
+                <Select value={form.icon_plate_variant} onValueChange={(v) => update("icon_plate_variant", v)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="dark">Mørk</SelectItem>
+                    <SelectItem value="yellow">Gul</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
             {editing && (
               <div>
                 <label className="text-sm font-medium mb-1 block">Ikon (PNG → auto SVG)</label>
@@ -297,10 +327,11 @@ export default function AdminCategories() {
                   Last opp et rent, flat PNG-ikon. Konverteres automatisk til SVG.
                 </p>
                 <div className="flex items-center gap-3">
-                  <CategoryIcon
-                    iconSvg={categories?.find((c) => c.id === editing.id)?.icon_svg}
-                    iconPngUrl={categories?.find((c) => c.id === editing.id)?.icon_png_url}
-                    className="h-12 w-12"
+                  <IconPlate
+                    svg={categories?.find((c) => c.id === editing.id)?.icon_svg}
+                    pngUrl={categories?.find((c) => c.id === editing.id)?.icon_png_url}
+                    sizePx={64}
+                    variant={(categories?.find((c) => c.id === editing.id) as any)?.icon_plate_variant || "dark"}
                   />
                   <Button
                     type="button"

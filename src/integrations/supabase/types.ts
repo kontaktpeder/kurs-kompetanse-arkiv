@@ -218,6 +218,51 @@ export type Database = {
         }
         Relationships: []
       }
+      home_hero_slides: {
+        Row: {
+          created_at: string
+          cta_primary_href: string | null
+          cta_primary_label: string | null
+          cta_secondary_href: string | null
+          cta_secondary_label: string | null
+          id: string
+          image_url: string
+          is_active: boolean
+          sort_order: number
+          subtitle: string | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          cta_primary_href?: string | null
+          cta_primary_label?: string | null
+          cta_secondary_href?: string | null
+          cta_secondary_label?: string | null
+          id?: string
+          image_url: string
+          is_active?: boolean
+          sort_order?: number
+          subtitle?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          cta_primary_href?: string | null
+          cta_primary_label?: string | null
+          cta_secondary_href?: string | null
+          cta_secondary_label?: string | null
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          sort_order?: number
+          subtitle?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       instructors: {
         Row: {
           bio: string | null

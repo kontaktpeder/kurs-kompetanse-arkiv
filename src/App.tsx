@@ -24,6 +24,7 @@ import AdminFAQs from "./pages/admin/AdminFAQs";
 import AdminInstructors from "./pages/admin/AdminInstructors";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminLegal from "./pages/admin/AdminLegal";
+import AdminHeroSlides from "./pages/admin/AdminHeroSlides";
 import LegalPage from "./pages/LegalPage";
 import NotFound from "./pages/NotFound";
 
@@ -69,6 +70,7 @@ const App = () => (
               <Route path="/admin/kursholdere" element={<AdminInstructors />} />
               <Route path="/admin/innstillinger" element={<AdminSettings />} />
               <Route path="/admin/juridisk" element={<AdminLegal />} />
+              <Route path="/admin/hero" element={<AdminHeroSlides />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />

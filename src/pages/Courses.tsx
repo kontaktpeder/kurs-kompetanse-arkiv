@@ -32,29 +32,10 @@ export default function Courses() {
             const cat = course.category;
             return (
               <Link key={course.id} to={`/kurs/${course.slug}`} className="group">
-                <div className="bg-card border border-border hover:border-primary/60 hover:shadow-[0_0_30px_hsl(45_100%_50%/0.08)] transition-all h-full overflow-hidden">
-                  {course.image_url ? (
-                    <div className="aspect-[3/1] overflow-hidden relative">
+                <div className="bg-card border border-border hover:border-primary/60 hover:shadow-[0_0_30px_hsl(45_100%_50%/0.08)] transition-all h-full overflow-hidden relative">
+                  {course.image_url && (
+                    <div className="aspect-[3/1] overflow-hidden">
                       <img src={course.image_url} alt={course.title} className="w-full h-full object-cover" />
-                      {cat && (
-                        <div className="absolute top-3 left-3">
-                          <IconPlate
-                            svg={cat.icon_svg}
-                            pngUrl={cat.icon_png_url}
-                            sizePx={72}
-                            variant={cat.icon_plate_variant || "dark"}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="p-6 pb-0 flex items-start">
-                      <IconPlate
-                        svg={cat?.icon_svg}
-                        pngUrl={cat?.icon_png_url}
-                        sizePx={80}
-                        variant={cat?.icon_plate_variant || "dark"}
-                      />
                     </div>
                   )}
                   <div className="p-6">
@@ -76,6 +57,17 @@ export default function Courses() {
                       Se kurs <ArrowRight className="h-3 w-3" />
                     </span>
                   </div>
+                  {/* Icon – bottom right corner */}
+                  {cat && (
+                    <div className="absolute bottom-4 right-4">
+                      <IconPlate
+                        svg={cat.icon_svg}
+                        pngUrl={cat.icon_png_url}
+                        sizePx={72}
+                        variant={cat.icon_plate_variant || "dark"}
+                      />
+                    </div>
+                  )}
                 </div>
               </Link>
             );

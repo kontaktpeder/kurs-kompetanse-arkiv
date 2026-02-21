@@ -156,19 +156,10 @@ export default function Index() {
                 const cat = course.category;
                 return (
                   <Link key={course.id} to={`/kurs/${course.slug}`} className="group">
-                    <div className="bg-card border border-border hover:border-primary/60 transition-all h-full overflow-hidden">
-                      {course.image_url ? (
-                        <div className="aspect-[3/1] overflow-hidden relative">
+                    <div className="bg-card border border-border hover:border-primary/60 transition-all h-full overflow-hidden relative">
+                      {course.image_url && (
+                        <div className="aspect-[3/1] overflow-hidden">
                           <img src={course.image_url} alt={course.title} className="w-full h-full object-cover" />
-                          {cat && (
-                            <div className="absolute top-3 left-3">
-                              <IconPlate svg={cat.icon_svg} pngUrl={cat.icon_png_url} sizePx={72} variant={cat.icon_plate_variant || "dark"} />
-                            </div>
-                          )}
-                        </div>
-                      ) : (
-                        <div className="p-6 pb-0 flex items-start">
-                          <IconPlate svg={cat?.icon_svg} pngUrl={cat?.icon_png_url} sizePx={80} variant={cat?.icon_plate_variant || "dark"} />
                         </div>
                       )}
                       <div className="p-6">
@@ -190,6 +181,11 @@ export default function Index() {
                           Se kurs <ArrowRight className="h-3 w-3" />
                         </span>
                       </div>
+                      {cat && (
+                        <div className="absolute bottom-4 right-4">
+                          <IconPlate svg={cat.icon_svg} pngUrl={cat.icon_png_url} sizePx={72} variant={cat.icon_plate_variant || "dark"} />
+                        </div>
+                      )}
                     </div>
                   </Link>
                 );

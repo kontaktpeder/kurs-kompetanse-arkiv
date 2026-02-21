@@ -168,8 +168,8 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
           }} />
 
           {/* Facts plate – bottom right on desktop */}
-          <div className="absolute bottom-0 right-0 z-10 hidden lg:block">
-            <div className="bg-primary text-primary-foreground px-8 py-5 flex gap-8">
+          <div className="absolute bottom-0 left-0 right-0 z-10 hidden lg:block">
+            <div className="bg-primary text-primary-foreground px-8 py-5 flex justify-around">
               {[
                 { num: "2006", label: "Siden" },
                 { num: totalRuns ?? "—", label: "Gjennomf." },

@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { courseTypeLabels, languageLabels, type MediaItem } from "@/lib/types";
 import { getIcon } from "@/lib/icons";
 import { MapPin, Calendar, Users, Star, Clock, FileText, Shield, Globe } from "lucide-react";
@@ -11,11 +10,20 @@ import { nb } from "date-fns/locale";
 
 /* ── helpers ── */
 
+function SectionDivider() {
+  return <div className="border-t border-border/30 my-12 lg:my-16" />;
+}
+
 function SectionHeading({ id, children }: { id?: string; children: React.ReactNode }) {
   return (
-    <div className="mb-4" id={id}>
-      <h2 className="text-xl font-bold uppercase tracking-wide">{children}</h2>
-      <div className="h-0.5 w-12 bg-primary mt-1" />
+    <div className="mb-6" id={id}>
+      <h2
+        className="text-lg font-bold uppercase tracking-wider mb-2"
+        style={{ fontFamily: "Oswald, sans-serif" }}
+      >
+        {children}
+      </h2>
+      <div className="h-[2px] w-16 bg-primary" />
     </div>
   );
 }
@@ -23,10 +31,10 @@ function SectionHeading({ id, children }: { id?: string; children: React.ReactNo
 function BulletList({ text }: { text: string }) {
   const items = text.split("\n").map((l) => l.trim()).filter(Boolean);
   return (
-    <ul className="space-y-1.5 list-none">
+    <ul className="space-y-2 list-none">
       {items.map((item, i) => (
-        <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-          <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary shrink-0" />
+        <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground leading-relaxed">
+          <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary shrink-0" />
           {item}
         </li>
       ))}
@@ -37,11 +45,11 @@ function BulletList({ text }: { text: string }) {
 function SmartText({ text }: { text: string }) {
   const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
   if (lines.length > 1) return <BulletList text={text} />;
-  return <p className="text-sm text-muted-foreground whitespace-pre-wrap">{text}</p>;
+  return <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">{text}</p>;
 }
 
 function PreservedText({ text }: { text: string }) {
-  return <p className="text-sm text-muted-foreground whitespace-pre-wrap">{text}</p>;
+  return <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">{text}</p>;
 }
 
 /* ── main component ── */
@@ -110,7 +118,7 @@ export default function CourseDetail() {
     <div>
       {/* ═══ HERO – Split: image left, yellow info right ═══ */}
       <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[50vh] lg:min-h-[60vh]">
-        {/* Left – Image, clean, no overlay */}
+        {/* Left – Image */}
         <div className="relative min-h-[300px] lg:min-h-0">
           {heroImage ? (
             <img
@@ -128,7 +136,6 @@ export default function CourseDetail() {
 
         {/* Right – Yellow info block */}
         <div className="bg-primary text-primary-foreground flex flex-col justify-center p-8 sm:p-10 lg:p-14">
-          {/* Breadcrumb */}
           <div className="text-sm mb-6 opacity-70">
             <Link to="/kurs" className="hover:opacity-100 transition-opacity">Kurs</Link>
             <span className="mx-2">/</span>
@@ -145,7 +152,6 @@ export default function CourseDetail() {
             {course.title}
           </h1>
 
-          {/* Info bar */}
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider bg-primary-foreground text-primary px-2.5 py-1 font-semibold">
               <Shield className="h-3 w-3" />
@@ -164,7 +170,6 @@ export default function CourseDetail() {
             )}
           </div>
 
-          {/* Meta chips */}
           <div className="flex flex-wrap gap-4 mb-6 text-sm opacity-80">
             {course.duration && (
               <span className="flex items-center gap-1.5">
@@ -178,7 +183,6 @@ export default function CourseDetail() {
             )}
           </div>
 
-          {/* Short description */}
           {(course.short_description || course.description) && (
             <p className="text-base sm:text-lg leading-relaxed opacity-90 max-w-xl">
               {course.short_description || course.description}
@@ -188,61 +192,60 @@ export default function CourseDetail() {
       </section>
 
       {/* ═══ MAIN CONTENT ═══ */}
-      <div className="px-4 sm:px-6 lg:px-8 py-12">
-        <div className="max-w-5xl mx-auto">
+      <div className="px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <div className="max-w-6xl mx-auto">
           {/* Offer */}
           {course.offer_is_active && course.offer_title && (
-            <div className="bg-primary/10 border border-primary/30 p-6 mb-10">
-              <h3 className="font-semibold text-lg mb-2 text-primary" style={{ fontFamily: "Oswald, sans-serif" }}>
-                {course.offer_title}
-              </h3>
-              {course.offer_body && <p className="text-sm text-muted-foreground">{course.offer_body}</p>}
-            </div>
-          )}
-
-          {/* Full description if different from short */}
-          {course.description && course.short_description && course.description !== course.short_description && (
-            <div className="bg-card border border-border p-6 mb-10">
-              <p className="text-foreground leading-relaxed whitespace-pre-wrap">{course.description}</p>
-            </div>
-          )}
-
-          {/* ── Accordion sections ── */}
-          {sections.length > 0 && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-12">
-              <div className="lg:col-span-2">
-                <Accordion type="multiple" defaultValue={["laeringsmal"]} className="space-y-3">
-                  {sections.map(({ id, title, content, render }) => (
-                    <AccordionItem
-                      key={id}
-                      value={id}
-                      className="bg-card border border-border px-6 scroll-mt-28"
-                      id={id}
-                    >
-                      <AccordionTrigger className="text-left font-bold uppercase tracking-wide text-base py-5" style={{ fontFamily: "Oswald, sans-serif" }}>
-                        {title}
-                      </AccordionTrigger>
-                      <AccordionContent className="pb-6">
-                        {render === "bullets" && <BulletList text={content!} />}
-                        {render === "smart" && <SmartText text={content!} />}
-                        {render === "text" && <PreservedText text={content!} />}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
+            <>
+              <div className="border-l-2 border-primary pl-6 mb-12">
+                <h3 className="font-semibold text-lg mb-1 text-primary" style={{ fontFamily: "Oswald, sans-serif" }}>
+                  {course.offer_title}
+                </h3>
+                {course.offer_body && <p className="text-sm text-muted-foreground">{course.offer_body}</p>}
               </div>
+            </>
+          )}
 
-              {/* CTA sidebar */}
-              <div>
-                <div className="bg-card border border-border p-6 sticky top-24 space-y-5">
-                  <h3 className="text-lg font-bold uppercase" style={{ fontFamily: "Oswald, sans-serif" }}>
+          {/* Full description */}
+          {course.description && course.short_description && course.description !== course.short_description && (
+            <div className="mb-12">
+              <p className="text-foreground leading-relaxed whitespace-pre-wrap max-w-3xl">{course.description}</p>
+            </div>
+          )}
+
+          {/* Two-column: open sections + CTA */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
+            {/* Left: open flat sections */}
+            <div className="lg:col-span-2">
+              {sections.map(({ id, title, content, render }, index) => (
+                <div key={id}>
+                  {index > 0 && <SectionDivider />}
+                  <div className="scroll-mt-28" id={id}>
+                    <SectionHeading>{title}</SectionHeading>
+                    {render === "bullets" && <BulletList text={content!} />}
+                    {render === "smart" && <SmartText text={content!} />}
+                    {render === "text" && <PreservedText text={content!} />}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Right: CTA panel – the only "card" */}
+            <div>
+              <div className="sticky top-24">
+                <div className="h-[2px] bg-primary mb-0" />
+                <div className="bg-card border-x border-b border-border/40 p-6 space-y-5">
+                  <h3
+                    className="text-lg font-bold uppercase tracking-wider"
+                    style={{ fontFamily: "Oswald, sans-serif" }}
+                  >
                     Send forespørsel
                   </h3>
                   <p className="text-sm text-muted-foreground">
                     Kontakt oss for pris, datoer og tilpasning av dette kurset.
                   </p>
 
-                  <div className="space-y-2">
+                  <div className="space-y-3 border-t border-border/30 pt-4">
                     {course.duration && (
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Clock className="h-4 w-4 text-primary" />
@@ -262,7 +265,7 @@ export default function CourseDetail() {
                     </div>
                     <div className="flex flex-wrap gap-1.5">
                       {(course.languages ?? []).map((l) => (
-                        <span key={l} className="text-xs uppercase tracking-wider text-muted-foreground border border-border px-2 py-0.5">
+                        <span key={l} className="text-xs uppercase tracking-wider text-muted-foreground border border-border/40 px-2 py-0.5">
                           {languageLabels[l] ?? l}
                         </span>
                       ))}
@@ -275,12 +278,13 @@ export default function CourseDetail() {
                 </div>
               </div>
             </div>
-          )}
+          </div>
 
           {/* Mobile CTA */}
-          <div className="lg:hidden mb-10">
-            <div className="bg-card border border-border p-6 space-y-4">
-              <h3 className="text-lg font-bold uppercase" style={{ fontFamily: "Oswald, sans-serif" }}>
+          <div className="lg:hidden mt-12">
+            <div className="h-[2px] bg-primary mb-0" />
+            <div className="bg-card border-x border-b border-border/40 p-6 space-y-4">
+              <h3 className="text-lg font-bold uppercase tracking-wider" style={{ fontFamily: "Oswald, sans-serif" }}>
                 Send forespørsel
               </h3>
               <p className="text-sm text-muted-foreground">Kontakt oss for pris, datoer og tilpasning.</p>
@@ -290,27 +294,28 @@ export default function CourseDetail() {
             </div>
           </div>
 
-          {/* Related runs */}
+          {/* Runs */}
           {runs && runs.length > 0 && (
-            <div className="mb-12" id="gjennomforinger">
-              <SectionHeading>Gjennomføringer</SectionHeading>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {runs.map((run) => {
-                  const media = (run.media as unknown as MediaItem[]) || [];
-                  const firstImage = media.find((m) => m.type === "image");
-                  return (
-                    <Link key={run.id} to={`/arkiv/${run.id}`} className="group">
-                      <div className="bg-card overflow-hidden border border-border hover:border-primary/40 transition-all">
-                        {firstImage && (
-                          <div className="aspect-video overflow-hidden">
-                            <img
-                              src={firstImage.url}
-                              alt="Gjennomføring"
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
-                          </div>
-                        )}
-                        <div className="p-4">
+            <>
+              <SectionDivider />
+              <div id="gjennomforinger" className="scroll-mt-28">
+                <SectionHeading>Gjennomføringer</SectionHeading>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {runs.map((run) => {
+                    const media = (run.media as unknown as MediaItem[]) || [];
+                    const firstImage = media.find((m) => m.type === "image");
+                    return (
+                      <Link key={run.id} to={`/arkiv/${run.id}`} className="group">
+                        <div className="overflow-hidden border-b border-border/30 pb-4 hover:border-primary/40 transition-colors">
+                          {firstImage && (
+                            <div className="aspect-video overflow-hidden mb-3">
+                              <img
+                                src={firstImage.url}
+                                alt="Gjennomføring"
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              />
+                            </div>
+                          )}
                           <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             {run.location_text && (
                               <span className="flex items-center gap-1">
@@ -333,42 +338,45 @@ export default function CourseDetail() {
                             <p className="text-sm text-muted-foreground mt-2 line-clamp-2">{run.summary}</p>
                           )}
                         </div>
-                      </div>
-                    </Link>
-                  );
-                })}
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            </>
           )}
 
-          {/* Reviews – always visible, not in accordion */}
+          {/* Reviews – always visible */}
           {reviews && reviews.length > 0 && (
-            <div id="anmeldelser">
-              <SectionHeading>Anmeldelser</SectionHeading>
-              <div className="space-y-4">
-                {reviews.map((review) => (
-                  <div key={review.id} className="bg-card border border-border p-5">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="flex">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`h-4 w-4 ${i < review.rating ? "fill-primary text-primary" : "text-muted"}`}
-                          />
-                        ))}
+            <>
+              <SectionDivider />
+              <div id="anmeldelser" className="scroll-mt-28">
+                <SectionHeading>Anmeldelser</SectionHeading>
+                <div className="space-y-6">
+                  {reviews.map((review) => (
+                    <div key={review.id} className="border-b border-border/30 pb-6 last:border-0">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="flex">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`h-4 w-4 ${i < review.rating ? "fill-primary text-primary" : "text-muted"}`}
+                            />
+                          ))}
+                        </div>
+                        {review.display_name && (
+                          <span className="text-sm font-medium">{review.display_name}</span>
+                        )}
+                        {review.company && (
+                          <span className="text-sm text-muted-foreground">– {review.company}</span>
+                        )}
                       </div>
-                      {review.display_name && (
-                        <span className="text-sm font-medium">{review.display_name}</span>
-                      )}
-                      {review.company && (
-                        <span className="text-sm text-muted-foreground">– {review.company}</span>
-                      )}
+                      {review.comment && <p className="text-sm text-muted-foreground leading-relaxed">{review.comment}</p>}
                     </div>
-                    {review.comment && <p className="text-sm text-muted-foreground">{review.comment}</p>}
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            </>
           )}
         </div>
       </div>

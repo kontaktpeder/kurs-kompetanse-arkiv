@@ -85,10 +85,10 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
     >
       <div className="grid grid-cols-1 lg:grid-cols-3 min-h-[60vh] lg:min-h-[80vh]">
         {/* LEFT: Text column – solid background, no image behind */}
-        <div className="relative z-10 bg-background flex flex-col justify-center px-6 sm:px-12 lg:px-14 xl:px-16 py-12 lg:py-20">
+        <div className="relative z-10 bg-primary text-primary-foreground flex flex-col justify-center px-6 sm:px-12 lg:px-14 xl:px-16 py-12 lg:py-20">
           <div>
             {/* Micro label */}
-            <p className="text-primary text-xs uppercase tracking-[0.3em] font-semibold mb-3">
+            <p className="text-primary-foreground/70 text-xs uppercase tracking-[0.3em] font-semibold mb-3">
               {microLabel}
             </p>
 
@@ -104,19 +104,19 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
             </h1>
 
             {/* Yellow accent line */}
-            <div className="h-[3px] w-16 bg-primary mb-4" />
+            <div className="h-[3px] w-16 bg-primary-foreground mb-4" />
 
             {/* Subtitle */}
-            <p className="text-muted-foreground text-base sm:text-lg max-w-sm mb-8 leading-relaxed">
+            <p className="text-primary-foreground/80 text-base sm:text-lg max-w-sm mb-8 leading-relaxed">
               Sertifisert og dokumentert opplæring – på norsk, engelsk og tegnspråk.
             </p>
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-3 mb-8">
-              <Button asChild size="lg" className="h-12 px-8 text-base">
+              <Button asChild size="lg" className="h-12 px-8 text-base bg-primary-foreground text-primary hover:bg-primary-foreground/90">
                 <Link to="/kurs">Se kurs</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="h-12 px-8 text-base">
+              <Button asChild size="lg" variant="outline" className="h-12 px-8 text-base border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10">
                 <Link to="/foresporsel">Send forespørsel</Link>
               </Button>
             </div>
@@ -129,7 +129,7 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
                     key={i}
                     onClick={() => goTo(i)}
                     className={`h-1 transition-all duration-300 ${
-                      i === current ? "w-10 bg-primary" : "w-5 bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                      i === current ? "w-10 bg-primary-foreground" : "w-5 bg-primary-foreground/30 hover:bg-primary-foreground/50"
                     }`}
                     aria-label={`Slide ${i + 1}`}
                   />

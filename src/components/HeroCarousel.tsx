@@ -85,38 +85,38 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
     >
       <div className="grid grid-cols-1 lg:grid-cols-3 min-h-[60vh] lg:min-h-[80vh]">
         {/* LEFT: Text column – solid background, no image behind */}
-        <div className="relative z-10 bg-background flex flex-col justify-center px-6 sm:px-12 lg:px-16 xl:px-20 py-16 lg:py-24">
-          <div className="max-w-[540px]">
+        <div className="relative z-10 bg-background flex flex-col justify-center px-6 sm:px-12 lg:px-14 xl:px-16 py-12 lg:py-20">
+          <div>
             {/* Micro label */}
-            <p className="text-primary text-xs uppercase tracking-[0.3em] font-semibold mb-5">
+            <p className="text-primary text-xs uppercase tracking-[0.3em] font-semibold mb-3">
               {microLabel}
             </p>
 
-            {/* Title */}
+            {/* Title – single line where possible */}
             <h1
-              className="font-bold leading-[0.92] mb-4"
+              className="font-bold leading-[0.92] mb-3"
               style={{
                 fontFamily: "Oswald, sans-serif",
-                fontSize: "clamp(36px, 4.5vw, 72px)",
+                fontSize: "clamp(32px, 3.5vw, 56px)",
               }}
             >
-              Kurs som gir<br />kompetanse
+              Kurs som gir kompetanse
             </h1>
 
             {/* Yellow accent line */}
-            <div className="h-[3px] w-20 bg-primary mb-6" />
+            <div className="h-[3px] w-16 bg-primary mb-4" />
 
             {/* Subtitle */}
-            <p className="text-muted-foreground text-lg sm:text-xl max-w-md mb-10 leading-relaxed">
+            <p className="text-muted-foreground text-base sm:text-lg max-w-sm mb-8 leading-relaxed">
               Sertifisert og dokumentert opplæring – på norsk, engelsk og tegnspråk.
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-3 mb-10">
-              <Button asChild size="lg" className="h-14 px-10 text-base">
+            <div className="flex flex-col sm:flex-row gap-3 mb-8">
+              <Button asChild size="lg" className="h-12 px-8 text-base">
                 <Link to="/kurs">Se kurs</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="h-14 px-10 text-base">
+              <Button asChild size="lg" variant="outline" className="h-12 px-8 text-base">
                 <Link to="/foresporsel">Send forespørsel</Link>
               </Button>
             </div>

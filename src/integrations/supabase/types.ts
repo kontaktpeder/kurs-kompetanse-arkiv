@@ -106,56 +106,77 @@ export type Database = {
       }
       courses: {
         Row: {
+          certification_info: string | null
+          course_structure: string | null
           course_type: Database["public"]["Enums"]["course_type"]
           created_at: string
           description: string | null
+          duration: string | null
           icon_key: string | null
           id: string
           is_active: boolean
           is_featured: boolean
           languages: string[]
+          learning_outcomes: string | null
           offer_body: string | null
           offer_expires_at: string | null
           offer_is_active: boolean
           offer_title: string | null
+          practical_info: string | null
+          requirements: string | null
           short_description: string | null
           slug: string
+          target_audience: string | null
           title: string
           updated_at: string
         }
         Insert: {
+          certification_info?: string | null
+          course_structure?: string | null
           course_type?: Database["public"]["Enums"]["course_type"]
           created_at?: string
           description?: string | null
+          duration?: string | null
           icon_key?: string | null
           id?: string
           is_active?: boolean
           is_featured?: boolean
           languages?: string[]
+          learning_outcomes?: string | null
           offer_body?: string | null
           offer_expires_at?: string | null
           offer_is_active?: boolean
           offer_title?: string | null
+          practical_info?: string | null
+          requirements?: string | null
           short_description?: string | null
           slug: string
+          target_audience?: string | null
           title: string
           updated_at?: string
         }
         Update: {
+          certification_info?: string | null
+          course_structure?: string | null
           course_type?: Database["public"]["Enums"]["course_type"]
           created_at?: string
           description?: string | null
+          duration?: string | null
           icon_key?: string | null
           id?: string
           is_active?: boolean
           is_featured?: boolean
           languages?: string[]
+          learning_outcomes?: string | null
           offer_body?: string | null
           offer_expires_at?: string | null
           offer_is_active?: boolean
           offer_title?: string | null
+          practical_info?: string | null
+          requirements?: string | null
           short_description?: string | null
           slug?: string
+          target_audience?: string | null
           title?: string
           updated_at?: string
         }

@@ -4,9 +4,46 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { courseTypeLabels, languageLabels, type MediaItem } from "@/lib/types";
 import { getIcon } from "@/lib/icons";
-import { MapPin, Calendar, Users, Star, CheckCircle } from "lucide-react";
+import { MapPin, Calendar, Users, Star, Clock, FileText } from "lucide-react";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale";
+
+/* ── helpers ── */
+
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="mb-4">
+      <h2 className="text-xl font-bold uppercase tracking-wide">{children}</h2>
+      <div className="h-0.5 w-12 bg-primary mt-1" />
+    </div>
+  );
+}
+
+function BulletList({ text }: { text: string }) {
+  const items = text.split("\n").map((l) => l.trim()).filter(Boolean);
+  return (
+    <ul className="space-y-1.5 list-none">
+      {items.map((item, i) => (
+        <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+          <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary shrink-0" />
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function SmartText({ text }: { text: string }) {
+  const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+  if (lines.length > 1) return <BulletList text={text} />;
+  return <p className="text-sm text-muted-foreground whitespace-pre-wrap">{text}</p>;
+}
+
+function PreservedText({ text }: { text: string }) {
+  return <p className="text-sm text-muted-foreground whitespace-pre-wrap">{text}</p>;
+}
+
+/* ── main component ── */
 
 export default function CourseDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -58,9 +95,17 @@ export default function CourseDetail() {
     ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
     : null;
 
+  const sections = [
+    { title: "Hva lærer du?", content: course.learning_outcomes, render: "bullets" },
+    { title: "Hvem passer kurset for?", content: course.target_audience, render: "smart" },
+    { title: "Gjennomføring", content: course.course_structure, render: "text" },
+    { title: "Sertifisering / dokumentasjon", content: course.certification_info, render: "text" },
+    { title: "Praktisk info", content: course.practical_info, render: "text" },
+  ] as const;
+
   return (
     <div className="py-12 px-4">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         {/* Breadcrumb */}
         <div className="text-sm text-muted-foreground mb-8">
           <Link to="/kurs" className="hover:text-primary">Kurs</Link>
@@ -93,12 +138,14 @@ export default function CourseDetail() {
           </div>
         </div>
 
-        {/* Description */}
-        <div className="bg-card border border-border p-6 mb-8">
-          <p className="text-foreground leading-relaxed whitespace-pre-wrap">
-            {course.description || course.short_description}
-          </p>
-        </div>
+        {/* Intro description */}
+        {(course.description || course.short_description) && (
+          <div className="bg-card border border-border p-6 mb-8">
+            <p className="text-foreground leading-relaxed whitespace-pre-wrap">
+              {course.description || course.short_description}
+            </p>
+          </div>
+        )}
 
         {/* Offer */}
         {course.offer_is_active && course.offer_title && (
@@ -108,17 +155,68 @@ export default function CourseDetail() {
           </div>
         )}
 
-        {/* CTA */}
-        <div className="mb-12">
-          <Button asChild size="lg">
-            <Link to={`/foresporsel?kurs=${course.id}`}>Send forespørsel for dette kurset</Link>
-          </Button>
+        {/* Two-column layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+          {/* Left: structured sections */}
+          <div className="lg:col-span-2 space-y-8">
+            {sections.map(({ title, content, render }) => {
+              if (!content) return null;
+              return (
+                <div key={title}>
+                  <SectionHeading>{title}</SectionHeading>
+                  {render === "bullets" && <BulletList text={content} />}
+                  {render === "smart" && <SmartText text={content} />}
+                  {render === "text" && <PreservedText text={content} />}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Right: CTA sidebar */}
+          <div>
+            <div className="bg-card border border-border p-6 sticky top-24 space-y-5">
+              <h3 className="text-lg font-bold uppercase" style={{ fontFamily: 'Oswald, sans-serif' }}>Send forespørsel</h3>
+              <p className="text-sm text-muted-foreground">Kontakt oss for pris, datoer og tilpasning av dette kurset.</p>
+
+              {/* Quick info chips */}
+              <div className="space-y-2">
+                {course.duration && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Clock className="h-4 w-4 text-primary" />
+                    <span>{course.duration}</span>
+                  </div>
+                )}
+                {course.requirements && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <FileText className="h-4 w-4 text-primary" />
+                    <span>{course.requirements}</span>
+                  </div>
+                )}
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <span className="text-xs uppercase tracking-wider bg-primary text-primary-foreground px-2 py-0.5">
+                    {courseTypeLabels[course.course_type]}
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {course.languages.map((l) => (
+                    <span key={l} className="text-xs uppercase tracking-wider text-muted-foreground border border-border px-2 py-0.5">
+                      {languageLabels[l] ?? l}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <Button asChild size="lg" className="w-full">
+                <Link to={`/foresporsel?kurs=${course.id}`}>Send forespørsel</Link>
+              </Button>
+            </div>
+          </div>
         </div>
 
         {/* Related runs */}
         {runs && runs.length > 0 && (
           <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-6">Gjennomføringer</h2>
+            <SectionHeading>Gjennomføringer</SectionHeading>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {runs.map((run) => {
                 const media = (run.media as unknown as MediaItem[]) || [];
@@ -169,7 +267,7 @@ export default function CourseDetail() {
         {/* Reviews */}
         {reviews && reviews.length > 0 && (
           <div>
-            <h2 className="text-3xl font-bold mb-6">Anmeldelser</h2>
+            <SectionHeading>Anmeldelser</SectionHeading>
             <div className="space-y-4">
               {reviews.map((review) => (
                 <div key={review.id} className="bg-card border border-border p-5">

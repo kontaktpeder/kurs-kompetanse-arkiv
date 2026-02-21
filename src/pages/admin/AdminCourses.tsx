@@ -176,7 +176,7 @@ export default function AdminCourses() {
                   </span>
                   {!c.is_active && <span className="text-xs text-destructive">Inaktiv</span>}
                 </div>
-                <div className="text-xs text-muted-foreground mt-0.5">/{c.slug} · {c.languages.map(l => languageLabels[l] ?? l).join(", ")}</div>
+                <div className="text-xs text-muted-foreground mt-0.5">/{c.slug} · {(c.languages ?? []).map(l => languageLabels[l] ?? l).join(", ")}</div>
               </div>
             </div>
             <div className="flex gap-1">

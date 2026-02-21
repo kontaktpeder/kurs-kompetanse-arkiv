@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { getIcon } from "@/lib/icons";
-import { courseTypeLabels, type MediaItem } from "@/lib/types";
+import { courseTypeLabels, languageLabels, type MediaItem } from "@/lib/types";
 import defaultHeroImage from "@/assets/hero-training.jpg";
 import { MapPin, Calendar, ArrowRight } from "lucide-react";
 import { format } from "date-fns";
@@ -164,7 +164,7 @@ export default function Index() {
                         <div className="flex gap-2 flex-wrap mb-4">
                           {course.languages.map((l) => (
                             <span key={l} className="text-[10px] uppercase tracking-wider text-muted-foreground border border-border px-2 py-0.5">
-                              {l === "no" ? "NO" : l === "en" ? "EN" : "🤟"}
+                              {languageLabels[l] ?? l}
                             </span>
                           ))}
                         </div>

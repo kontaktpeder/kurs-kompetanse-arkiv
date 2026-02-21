@@ -18,6 +18,7 @@ export default function Footer() {
               <li><Link to="/kurs" className="text-muted-foreground hover:text-primary transition-colors">Kurs</Link></li>
               <li><Link to="/arkiv" className="text-muted-foreground hover:text-primary transition-colors">Arkiv</Link></li>
               <li><Link to="/foresporsel" className="text-muted-foreground hover:text-primary transition-colors">Send forespørsel</Link></li>
+              <li><Link to="/login" className="text-muted-foreground hover:text-primary transition-colors">Admin</Link></li>
             </ul>
           </div>
           <div>

@@ -32,7 +32,10 @@ export type Database = {
       course_categories: {
         Row: {
           created_at: string
+          icon_plate: boolean
+          icon_plate_variant: string
           icon_png_url: string | null
+          icon_size_px: number
           icon_svg: string | null
           icon_svg_url: string | null
           id: string
@@ -45,7 +48,10 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          icon_plate?: boolean
+          icon_plate_variant?: string
           icon_png_url?: string | null
+          icon_size_px?: number
           icon_svg?: string | null
           icon_svg_url?: string | null
           id?: string
@@ -58,7 +64,10 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          icon_plate?: boolean
+          icon_plate_variant?: string
           icon_png_url?: string | null
+          icon_size_px?: number
           icon_svg?: string | null
           icon_svg_url?: string | null
           id?: string

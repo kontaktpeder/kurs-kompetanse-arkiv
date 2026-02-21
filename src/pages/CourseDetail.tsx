@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { courseTypeLabels, languageLabels, type MediaItem } from "@/lib/types";
-import CategoryIcon from "@/components/CategoryIcon";
+import IconPlate from "@/components/icons/IconPlate";
 import { MapPin, Calendar, Users, Star, Clock, FileText, Shield, Globe } from "lucide-react";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale";
@@ -67,7 +67,7 @@ export default function CourseDetail() {
       const catSlug = (data as any).category_slug;
       let category = null;
       if (catSlug) {
-        const { data: catData } = await supabase.from("course_categories" as any).select("slug, name, icon_svg, icon_png_url").eq("slug", catSlug).single();
+        const { data: catData } = await supabase.from("course_categories" as any).select("slug, name, icon_svg, icon_png_url, icon_size_px, icon_plate, icon_plate_variant").eq("slug", catSlug).single();
         category = catData;
       }
       return { ...data, category } as any;
@@ -137,7 +137,7 @@ export default function CourseDetail() {
             />
           ) : (
             <div className="w-full h-full bg-secondary flex items-center justify-center">
-              <CategoryIcon iconSvg={cat?.icon_svg} iconPngUrl={cat?.icon_png_url} className="h-24 w-24 text-primary/30" />
+              <IconPlate svg={cat?.icon_svg} pngUrl={cat?.icon_png_url} sizePx={120} variant="dark" />
             </div>
           )}
         </div>
@@ -150,15 +150,25 @@ export default function CourseDetail() {
             <span>{course.title}</span>
           </div>
 
-          <h1
-            className="font-bold leading-[0.95] mb-6"
-            style={{
-              fontFamily: "Oswald, sans-serif",
-              fontSize: "clamp(32px, 4.5vw, 64px)",
-            }}
-          >
-            {course.title}
-          </h1>
+          <div className="flex items-start gap-5 mb-6">
+            {cat && (
+              <IconPlate
+                svg={cat.icon_svg}
+                pngUrl={cat.icon_png_url}
+                sizePx={88}
+                variant="yellow"
+              />
+            )}
+            <h1
+              className="font-bold leading-[0.95]"
+              style={{
+                fontFamily: "Oswald, sans-serif",
+                fontSize: "clamp(32px, 4.5vw, 64px)",
+              }}
+            >
+              {course.title}
+            </h1>
+          </div>
 
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider bg-primary-foreground text-primary px-2.5 py-1 font-semibold">

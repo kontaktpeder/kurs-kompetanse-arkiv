@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
-import { getIcon } from "@/lib/icons";
+import CategoryIcon from "@/components/CategoryIcon";
 import { courseTypeLabels, languageLabels } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -12,11 +12,14 @@ export default function Courses() {
   const [langFilter, setLangFilter] = useState<string>("");
 
   const { data: courses, isLoading } = useQuery({
-    queryKey: ["public-courses"],
+    queryKey: ["public-courses-with-category"],
     queryFn: async () => {
       const { data, error } = await supabase.from("courses").select("*").order("title");
       if (error) throw error;
-      return data;
+      // Fetch categories separately since FK may not exist in generated types
+      const { data: cats } = await supabase.from("course_categories" as any).select("slug, name, icon_svg, icon_png_url");
+      const catMap = new Map((cats as any[] || []).map((c: any) => [c.slug, c]));
+      return (data || []).map((c: any) => ({ ...c, category: catMap.get(c.category_slug) || null }));
     },
   });
 
@@ -69,8 +72,8 @@ export default function Courses() {
         {isLoading && <p className="text-muted-foreground">Laster kurs...</p>}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered?.map((course) => {
-            const Icon = getIcon(course.icon_key);
+          {filtered?.map((course: any) => {
+            const cat = course.category;
             return (
               <Link key={course.id} to={`/kurs/${course.slug}`} className="group">
                 <div className="bg-card border border-border hover:border-primary/60 hover:shadow-[0_0_30px_hsl(45_100%_50%/0.08)] transition-all h-full overflow-hidden">
@@ -82,7 +85,7 @@ export default function Courses() {
                     <div className="h-1 bg-primary" />
                   )}
                   <div className="p-6">
-                    {!course.image_url && <Icon className="h-7 w-7 text-primary mb-4" strokeWidth={1.5} />}
+                    {!course.image_url && <CategoryIcon iconSvg={cat?.icon_svg} iconPngUrl={cat?.icon_png_url} className="h-7 w-7 text-primary mb-4" />}
                     <h3 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors" style={{ fontFamily: 'Oswald, sans-serif' }}>
                       {course.title}
                     </h3>

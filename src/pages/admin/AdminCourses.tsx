@@ -7,7 +7,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { courseTypeLabels, languageLabels } from "@/lib/types";
-import { availableIcons } from "@/lib/icons";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import MediaUploadField from "@/components/MediaUploadField";
 import type { Tables, Enums } from "@/integrations/supabase/types";
@@ -16,7 +15,7 @@ type Course = Tables<"courses">;
 
 const emptyCourse = {
   title: "", slug: "", description: "", short_description: "",
-  course_type: "other" as Enums<"course_type">, languages: ["no"], icon_key: "",
+  course_type: "other" as Enums<"course_type">, languages: ["no"], category_slug: "",
   is_active: true, is_featured: false,
   offer_is_active: false, offer_title: "", offer_body: "", offer_expires_at: "",
   learning_outcomes: "", target_audience: "", course_structure: "",
@@ -39,6 +38,19 @@ export default function AdminCourses() {
     },
   });
 
+  const { data: categories } = useQuery({
+    queryKey: ["admin-categories"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("course_categories" as any)
+        .select("slug, name")
+        .eq("is_active", true)
+        .order("sort_order");
+      if (error) throw error;
+      return data as unknown as { slug: string; name: string }[];
+    },
+  });
+
   const saveMutation = useMutation({
     mutationFn: async () => {
       const payload = {
@@ -48,7 +60,7 @@ export default function AdminCourses() {
         short_description: form.short_description || null,
         course_type: form.course_type,
         languages: form.languages,
-        icon_key: form.icon_key || null,
+        category_slug: form.category_slug || null,
         is_active: form.is_active,
         is_featured: form.is_featured,
         offer_is_active: form.offer_is_active,
@@ -64,7 +76,7 @@ export default function AdminCourses() {
         requirements: form.requirements || null,
         image_url: form.image_url || null,
         hero_image_url: form.hero_image_url || null,
-      };
+      } as any;
       if (editing) {
         const { error } = await supabase.from("courses").update(payload).eq("id", editing.id);
         if (error) throw error;
@@ -121,7 +133,8 @@ export default function AdminCourses() {
       title: c.title, slug: c.slug,
       description: c.description || "", short_description: c.short_description || "",
       course_type: c.course_type, languages: c.languages,
-      icon_key: c.icon_key || "", is_active: c.is_active, is_featured: c.is_featured,
+      category_slug: (c as any).category_slug || "",
+      is_active: c.is_active, is_featured: c.is_featured,
       offer_is_active: c.offer_is_active, offer_title: c.offer_title || "",
       offer_body: c.offer_body || "", offer_expires_at: c.offer_expires_at || "",
       learning_outcomes: c.learning_outcomes || "", target_audience: c.target_audience || "",
@@ -219,10 +232,10 @@ export default function AdminCourses() {
                 </select>
               </div>
               <div>
-                <label className="text-sm font-medium mb-1 block">Ikon</label>
-                <select value={form.icon_key} onChange={(e) => update("icon_key", e.target.value)} className="w-full border border-input bg-background rounded-md px-3 py-2 text-sm">
+                <label className="text-sm font-medium mb-1 block">Kategori</label>
+                <select value={form.category_slug} onChange={(e) => update("category_slug", e.target.value)} className="w-full border border-input bg-background rounded-md px-3 py-2 text-sm">
                   <option value="">Ingen</option>
-                  {availableIcons.map((k) => <option key={k} value={k}>{k}</option>)}
+                  {categories?.map((c) => <option key={c.slug} value={c.slug}>{c.name}</option>)}
                 </select>
               </div>
             </div>

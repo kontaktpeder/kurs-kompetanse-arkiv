@@ -1,13 +1,14 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
-  LayoutDashboard, BookOpen, Calendar, Inbox, Star, HelpCircle, Users, LogOut, Settings, Scale, Image,
+  LayoutDashboard, BookOpen, Calendar, Inbox, Star, HelpCircle, Users, LogOut, Settings, Scale, Image, Tags,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const adminNav = [
   { title: "Dashboard", path: "/admin", icon: LayoutDashboard },
   { title: "Kurs", path: "/admin/kurs", icon: BookOpen },
+  { title: "Kategorier", path: "/admin/kategorier", icon: Tags },
   { title: "Gjennomføringer", path: "/admin/gjennomforinger", icon: Calendar },
   { title: "Forespørsler", path: "/admin/foresporsel", icon: Inbox },
   { title: "Anmeldelser", path: "/admin/anmeldelser", icon: Star },

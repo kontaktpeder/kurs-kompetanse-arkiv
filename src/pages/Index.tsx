@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { getIcon } from "@/lib/icons";
+import CategoryIcon from "@/components/CategoryIcon";
 import { courseTypeLabels, languageLabels, type MediaItem } from "@/lib/types";
 import defaultHeroImage from "@/assets/hero-training.jpg";
 import HeroCarousel from "@/components/HeroCarousel";
@@ -13,11 +13,13 @@ import { nb } from "date-fns/locale";
 
 export default function Index() {
   const { data: courses } = useQuery({
-    queryKey: ["public-courses"],
+    queryKey: ["public-courses-with-category"],
     queryFn: async () => {
       const { data, error } = await supabase.from("courses").select("*").order("title");
       if (error) throw error;
-      return data;
+      const { data: cats } = await supabase.from("course_categories" as any).select("slug, name, icon_svg, icon_png_url");
+      const catMap = new Map((cats as any[] || []).map((c: any) => [c.slug, c]));
+      return (data || []).map((c: any) => ({ ...c, category: catMap.get(c.category_slug) || null }));
     },
   });
 
@@ -150,8 +152,8 @@ export default function Index() {
               Alle kurs tilbys på bestilling og tilpasses din bedrift
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {courses.map((course) => {
-                const Icon = getIcon(course.icon_key);
+              {courses.map((course: any) => {
+                const cat = course.category;
                 return (
                   <Link key={course.id} to={`/kurs/${course.slug}`} className="group">
                     <div className="bg-card border border-border hover:border-primary/60 transition-all h-full overflow-hidden">
@@ -163,7 +165,7 @@ export default function Index() {
                         <div className="h-1 bg-primary" />
                       )}
                       <div className="p-6">
-                        {!course.image_url && <Icon className="h-7 w-7 text-primary mb-4" strokeWidth={1.5} />}
+                        {!course.image_url && <CategoryIcon iconSvg={cat?.icon_svg} iconPngUrl={cat?.icon_png_url} className="h-7 w-7 text-primary mb-4" />}
                         <h3 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors" style={{ fontFamily: 'Oswald, sans-serif' }}>
                           {course.title}
                         </h3>

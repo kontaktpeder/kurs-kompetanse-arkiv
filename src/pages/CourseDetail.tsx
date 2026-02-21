@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { courseTypeLabels, languageLabels, type MediaItem } from "@/lib/types";
-import { getIcon } from "@/lib/icons";
+import CategoryIcon from "@/components/CategoryIcon";
 import { MapPin, Calendar, Users, Star, Clock, FileText, Shield, Globe } from "lucide-react";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale";
@@ -63,7 +63,14 @@ export default function CourseDetail() {
     queryFn: async () => {
       const { data, error } = await supabase.from("courses").select("*").eq("slug", slug!).single();
       if (error) throw error;
-      return data;
+      // Fetch category
+      const catSlug = (data as any).category_slug;
+      let category = null;
+      if (catSlug) {
+        const { data: catData } = await supabase.from("course_categories" as any).select("slug, name, icon_svg, icon_png_url").eq("slug", catSlug).single();
+        category = catData;
+      }
+      return { ...data, category } as any;
     },
     enabled: !!slug,
   });
@@ -100,7 +107,7 @@ export default function CourseDetail() {
   if (isLoading) return <div className="py-20 text-center text-muted-foreground">Laster...</div>;
   if (!course) return <div className="py-20 text-center text-muted-foreground">Kurset ble ikke funnet</div>;
 
-  const Icon = getIcon(course.icon_key);
+  const cat = course.category;
   const avgRating = reviews && reviews.length > 0
     ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
     : null;
@@ -130,7 +137,7 @@ export default function CourseDetail() {
             />
           ) : (
             <div className="w-full h-full bg-secondary flex items-center justify-center">
-              <Icon className="h-24 w-24 text-primary/30" strokeWidth={1} />
+              <CategoryIcon iconSvg={cat?.icon_svg} iconPngUrl={cat?.icon_png_url} className="h-24 w-24 text-primary/30" />
             </div>
           )}
         </div>

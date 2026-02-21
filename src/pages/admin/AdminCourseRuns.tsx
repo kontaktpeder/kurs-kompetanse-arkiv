@@ -148,7 +148,32 @@ export default function AdminCourseRuns() {
   };
 
   const closeDialog = () => { setOpen(false); setEditing(null); };
-  const update = (key: string, value: any) => setForm((f) => ({ ...f, [key]: value }));
+  const generateDateLabel = (start: string, end: string) => {
+    if (!start) return "";
+    const s = new Date(start);
+    if (end) {
+      const e = new Date(end);
+      if (s.getMonth() === e.getMonth() && s.getFullYear() === e.getFullYear()) {
+        return `${s.getDate()}.–${format(e, "d. MMM yyyy", { locale: nb })}`;
+      }
+      return `${format(s, "d. MMM", { locale: nb })} – ${format(e, "d. MMM yyyy", { locale: nb })}`;
+    }
+    return format(s, "d. MMM yyyy", { locale: nb });
+  };
+
+  const update = (key: string, value: any) => {
+    setForm((f) => {
+      const next = { ...f, [key]: value };
+      // Auto-generate date_label when dates change and label is empty or was auto-generated
+      if (key === "date_start" || key === "date_end") {
+        const oldAuto = generateDateLabel(f.date_start, f.date_end);
+        if (!f.date_label || f.date_label === oldAuto) {
+          next.date_label = generateDateLabel(next.date_start, next.date_end);
+        }
+      }
+      return next;
+    });
+  };
 
   return (
     <div>
@@ -197,7 +222,7 @@ export default function AdminCourseRuns() {
               <div><label className="text-sm font-medium mb-1 block">Startdato</label><Input type="date" value={form.date_start} onChange={(e) => update("date_start", e.target.value)} /></div>
               <div><label className="text-sm font-medium mb-1 block">Sluttdato</label><Input type="date" value={form.date_end} onChange={(e) => update("date_end", e.target.value)} /></div>
             </div>
-            <div><label className="text-sm font-medium mb-1 block">Dato-label (valgfritt)</label><Input value={form.date_label} onChange={(e) => update("date_label", e.target.value)} /></div>
+            <div><label className="text-sm font-medium mb-1 block">Dato-label <span className="text-muted-foreground font-normal">(autogenerert)</span></label><Input value={form.date_label} onChange={(e) => update("date_label", e.target.value)} placeholder={generateDateLabel(form.date_start, form.date_end) || "Genereres fra datoer"} /></div>
             <div><label className="text-sm font-medium mb-1 block">Sted</label><Input value={form.location_text} onChange={(e) => update("location_text", e.target.value)} /></div>
             <div><label className="text-sm font-medium mb-1 block">Kundelabel</label><Input value={form.client_label} onChange={(e) => update("client_label", e.target.value)} /></div>
             <div className="grid grid-cols-2 gap-4">

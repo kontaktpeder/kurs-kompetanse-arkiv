@@ -277,7 +277,7 @@ export default function CourseDetail() {
             </div>
 
             {/* Right: CTA panel – the only "card" */}
-            <div>
+            <div className="hidden lg:block">
               <div className="sticky top-24">
                 <div className="h-[2px] bg-primary mb-0" />
                 <div className="bg-card border-x border-b border-border/40 p-6 space-y-5">

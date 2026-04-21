@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-primary text-lg mb-3" style={{ fontFamily: 'Oswald, sans-serif' }}>Kurs Kragerø</h3>
+            <h3 className="text-primary text-lg mb-3" style={{ fontFamily: 'Oswald, sans-serif' }}>Kragerø Kurs og Sikkerhetsopplæring</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Sertifisert og dokumentert opplæring siden 2006.
               Vi tilbyr kurs på norsk, engelsk og tegnspråk.
@@ -43,7 +43,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-border mt-8 pt-6 text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Kurs Kragerø. Alle rettigheter reservert.
+          © {new Date().getFullYear()} Kragerø Kurs og Sikkerhetsopplæring. Alle rettigheter reservert.
         </div>
       </div>
     </footer>

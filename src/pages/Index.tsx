@@ -251,13 +251,13 @@ export default function Index() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div>
             <h2 className="text-4xl lg:text-5xl font-bold mb-4">Hvorfor velge oss</h2>
-            <p className="text-muted-foreground">Over 15 års erfaring med sertifisert kursopplæring for industri, bygg og anlegg.</p>
+            <p className="text-muted-foreground">Over 20 års erfaring med sertifisert kursopplæring for industri, bygg og anlegg.</p>
           </div>
           <div className="space-y-6">
             {[
               { title: "Sertifisert opplæring", desc: "Våre kurs følger gjeldende forskrifter og standarder. Du får dokumentasjon som holder." },
               { title: "Flerspråklig", desc: "Vi tilbyr kurs på norsk, engelsk og tegnspråk – tilpasset dine ansatte." },
-              { title: "Erfaring siden 2006", desc: "Over 15 års erfaring med kursopplæring for industri, bygg og anlegg." },
+              { title: "Erfaring siden 2006", desc: "Over 20 års erfaring med kursopplæring for industri, bygg og anlegg." },
             ].map((item) => (
               <div key={item.title} className="flex gap-4 items-start border-l-2 border-primary pl-6">
                 <div>

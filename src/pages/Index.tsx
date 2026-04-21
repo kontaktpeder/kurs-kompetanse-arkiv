@@ -126,18 +126,18 @@ export default function Index() {
 
       {/* STATS */}
       <section className="py-20 px-4 border-t border-border">
-        <div className="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 text-center">
           {[
             { num: "2006", label: "Erfaring siden" },
             { num: "Bedriftskurs", label: "Tilpasses bedrift og behov" },
             { num: "3 språk", label: "Norsk · Engelsk · Tegnspråk" },
             { num: "Fornøyde kunder", label: "Kunder kommer tilbake" },
           ].map((stat) => (
-            <div key={stat.label}>
-              <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary leading-none mb-2" style={{ fontFamily: 'Oswald, sans-serif' }}>
+            <div key={stat.label} className="px-1 sm:px-0">
+              <div className="text-2xl sm:text-5xl lg:text-6xl font-bold text-primary leading-none mb-2" style={{ fontFamily: 'Oswald, sans-serif' }}>
                 {stat.num}
               </div>
-              <div className="text-sm uppercase tracking-widest text-muted-foreground">{stat.label}</div>
+              <div className="text-xs sm:text-sm uppercase tracking-widest text-muted-foreground whitespace-nowrap">{stat.label}</div>
             </div>
           ))}
         </div>

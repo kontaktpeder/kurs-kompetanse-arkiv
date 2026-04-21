@@ -129,12 +129,12 @@ export default function Index() {
         <div className="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           {[
             { num: "2006", label: "Erfaring siden" },
-            { num: totalRuns ?? "—", label: "Gjennomføringer" },
-            { num: "3", label: "Språk" },
-            { num: "98%", label: "Bestått-rate" },
+            { num: "Bedriftskurs", label: "Tilpasses bedrift og behov" },
+            { num: "3 språk", label: "Norsk · Engelsk · Tegnspråk" },
+            { num: "Fornøyde kunder", label: "Kunder kommer tilbake" },
           ].map((stat) => (
             <div key={stat.label}>
-              <div className="text-6xl sm:text-7xl lg:text-8xl font-bold text-primary leading-none mb-2" style={{ fontFamily: 'Oswald, sans-serif' }}>
+              <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary leading-none mb-2" style={{ fontFamily: 'Oswald, sans-serif' }}>
                 {stat.num}
               </div>
               <div className="text-sm uppercase tracking-widest text-muted-foreground">{stat.label}</div>

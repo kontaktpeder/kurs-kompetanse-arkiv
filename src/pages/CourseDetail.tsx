@@ -248,7 +248,7 @@ export default function CourseDetail() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
             {/* Left: open flat sections */}
             <div className="lg:col-span-2">
-              <Accordion type="multiple" defaultValue={["laeringsmal"]} className="space-y-0">
+              <Accordion type="single" collapsible defaultValue="laeringsmal" className="space-y-0">
                 {sections.map(({ id, title, content, render }) => (
                   <AccordionItem
                     key={id}

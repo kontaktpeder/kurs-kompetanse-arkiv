@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Zap, Target, Users, ArrowRight } from "lucide-react";
+import { Zap, Target, Users, ArrowRight, Phone } from "lucide-react";
 import gokartImg from "@/assets/event-gokart.png";
 import paintballImg from "@/assets/event-paintball.png";
 
@@ -59,11 +59,18 @@ export default function EventTeambuilding() {
               </a>{" "}
               kan vi tilby opplegg for bedrifter, team og grupper.
             </p>
-            <Button asChild size="lg">
-              <Link to="/foresporsel">
-                Ta kontakt <ArrowRight className="ml-1" />
-              </Link>
-            </Button>
+            <div className="flex flex-wrap gap-3">
+              <Button asChild size="lg">
+                <Link to="/foresporsel">
+                  Ta kontakt <ArrowRight className="ml-1" />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <a href="tel:+4795044749">
+                  <Phone className="mr-1" /> Ring Lars Børre
+                </a>
+              </Button>
+            </div>
           </div>
         </div>
         <div className="lg:col-span-2 grid grid-cols-2 min-h-[320px] lg:min-h-[640px]">
@@ -115,11 +122,18 @@ export default function EventTeambuilding() {
           <p className="text-lg mb-10 opacity-90 max-w-2xl mx-auto">
             Ta kontakt med oss for en prat om kurs, aktiviteter og firmadag.
           </p>
-          <Button asChild size="lg" variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
-            <Link to="/foresporsel">
-              Ta kontakt <ArrowRight className="ml-1" />
-            </Link>
-          </Button>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Button asChild size="lg" variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
+              <Link to="/foresporsel">
+                Ta kontakt <ArrowRight className="ml-1" />
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
+              <a href="tel:+4795044749">
+                <Phone className="mr-1" /> Ring Lars Børre
+              </a>
+            </Button>
+          </div>
         </div>
       </section>
     </div>

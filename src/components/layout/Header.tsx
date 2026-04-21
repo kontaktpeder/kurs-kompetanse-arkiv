@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
-import { Menu, X, Phone, Mail } from "lucide-react";
+import { Menu, X, Phone, Mail, Facebook } from "lucide-react";
+import logoIcon from "@/assets/logo-icon.png";
 
 const navItems = [
   { label: "Hjem", to: "/" },
@@ -26,13 +27,17 @@ export default function Header() {
           <a href="mailto:lbl@krap.no" className="flex items-center gap-1.5 hover:text-primary transition-colors">
             <Mail className="h-3 w-3" /> lbl@krap.no
           </a>
+          <a href="https://www.facebook.com/profile.php?id=61569509614507" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="flex items-center gap-1.5 hover:text-primary transition-colors">
+            <Facebook className="h-3 w-3" />
+          </a>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="font-bold text-xl tracking-widest uppercase text-primary" style={{ fontFamily: 'Oswald, sans-serif' }}>
-            Kragerø Maskin og Opplæring
+          <Link to="/" className="flex items-center gap-3 font-bold text-xl tracking-widest uppercase text-primary" style={{ fontFamily: 'Oswald, sans-serif' }}>
+            <img src={logoIcon} alt="Kragerø Maskin og Opplæring" className="h-10 w-10 object-contain" />
+            <span className="hidden sm:inline">Kragerø Maskin og Opplæring</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-0">
@@ -80,6 +85,9 @@ export default function Header() {
             </a>
             <a href="mailto:lbl@krap.no" className="flex items-center gap-2 hover:text-primary transition-colors">
               <Mail className="h-3.5 w-3.5" /> lbl@krap.no
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61569509614507" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors">
+              <Facebook className="h-3.5 w-3.5" /> Facebook
             </a>
           </div>
         </nav>

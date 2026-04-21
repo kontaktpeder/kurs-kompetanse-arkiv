@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail } from "lucide-react";
+import { Phone, Mail, Facebook } from "lucide-react";
+import logoIcon from "@/assets/logo-icon.png";
 
 export default function Footer() {
   return (
@@ -7,7 +8,10 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-primary text-lg mb-3" style={{ fontFamily: 'Oswald, sans-serif' }}>Kragerø Maskin og Opplæring</h3>
+            <div className="flex items-center gap-3 mb-3">
+              <img src={logoIcon} alt="Kragerø Maskin og Opplæring" className="h-12 w-12 object-contain" />
+              <h3 className="text-primary text-lg" style={{ fontFamily: 'Oswald, sans-serif' }}>Kragerø Maskin og Opplæring</h3>
+            </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Sertifisert og dokumentert opplæring siden 2006.
               Vi tilbyr kurs på norsk, engelsk og tegnspråk.
@@ -36,6 +40,11 @@ export default function Footer() {
               <li>
                 <a href="mailto:lbl@krap.no" className="flex items-center gap-2 hover:text-primary transition-colors">
                   <Mail className="h-3.5 w-3.5" /> lbl@krap.no
+                </a>
+              </li>
+              <li>
+                <a href="https://www.facebook.com/profile.php?id=61569509614507" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors">
+                  <Facebook className="h-3.5 w-3.5" /> Facebook
                 </a>
               </li>
               <li className="pt-1">Kragerø, Norge</li>

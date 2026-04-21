@@ -28,6 +28,7 @@ import AdminHeroSlides from "./pages/admin/AdminHeroSlides";
 import AdminCategories from "./pages/admin/AdminCategories";
 import AdminInnhold from "./pages/admin/AdminInnhold";
 import OmOss from "./pages/OmOss";
+import EventTeambuilding from "./pages/EventTeambuilding";
 import LegalPage from "./pages/LegalPage";
 import NotFound from "./pages/NotFound";
 
@@ -50,6 +51,7 @@ const App = () => (
               <Route path="/arkiv" element={<Archive />} />
               <Route path="/arkiv/:id" element={<ArchiveDetail />} />
               <Route path="/om-oss" element={<OmOss />} />
+              <Route path="/event-teambuilding" element={<EventTeambuilding />} />
               <Route path="/foresporsel" element={<Inquiry />} />
               <Route path="/:slug" element={<LegalPage />} />
             </Route>

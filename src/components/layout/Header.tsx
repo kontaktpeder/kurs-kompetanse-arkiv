@@ -8,6 +8,7 @@ const navItems = [
   { label: "Kurs", to: "/kurs" },
   { label: "Arkiv", to: "/arkiv" },
   { label: "Om oss", to: "/om-oss" },
+  { label: "Event / Teambuilding", to: "/event-teambuilding" },
   { label: "Forespørsel", to: "/foresporsel" },
 ];
 

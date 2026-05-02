@@ -7,6 +7,7 @@ import IconPlate from "@/components/icons/IconPlate";
 import { courseTypeLabels, languageLabels, type MediaItem } from "@/lib/types";
 import defaultHeroImage from "@/assets/hero-training.jpg";
 import HeroCarousel from "@/components/HeroCarousel";
+import Seo, { SITE_URL, SITE_NAME } from "@/components/Seo";
 import { MapPin, Calendar, ArrowRight } from "lucide-react";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale";
@@ -80,8 +81,32 @@ export default function Index() {
   const heroImage = siteSettings?.home_hero_image_url || defaultHeroImage;
   const hasSlides = heroSlides && heroSlides.length > 0;
 
+  const localBusinessJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": SITE_NAME,
+    "url": SITE_URL,
+    "telephone": "+47 950 44 749",
+    "email": "lbl@krap.no",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Kragerø",
+      "addressCountry": "NO",
+    },
+    "areaServed": "NO",
+    "sameAs": [
+      "https://www.facebook.com/profile.php?id=61569509614507",
+    ],
+  };
+
   return (
     <>
+      <Seo
+        title="Sertifisert kursopplæring siden 2006"
+        description="Kragerø Maskin og Opplæring tilbyr sertifisert og dokumentert kursopplæring for industri, bygg og anlegg. På norsk, engelsk og tegnspråk."
+        canonical="/"
+        jsonLd={localBusinessJsonLd}
+      />
       {/* HERO */}
       {hasSlides ? (
         <HeroCarousel slides={heroSlides} totalRuns={totalRuns} />
@@ -106,7 +131,7 @@ export default function Index() {
             </div>
           </div>
           <div className="lg:col-span-2 relative">
-            <img src={heroImage} alt="Kursopplæring" className="w-full h-full object-cover min-h-[400px]" />
+            <img src={heroImage} alt="Sertifisert kursopplæring – industri og maskin" className="w-full h-full object-cover min-h-[400px]" loading="eager" />
             <div className="absolute bottom-0 left-0 right-0 bg-primary text-primary-foreground p-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
                 { num: "2006", label: "Siden" },
@@ -159,7 +184,7 @@ export default function Index() {
                     <div className="bg-card border border-border hover:border-primary/60 transition-all h-full overflow-hidden relative">
                       {course.image_url && (
                         <div className="aspect-[3/1] overflow-hidden">
-                          <img src={course.image_url} alt={course.title} className="w-full h-full object-cover" />
+                          <img src={course.image_url} alt={course.title} className="w-full h-full object-cover" loading="lazy" />
                         </div>
                       )}
                       <div className="p-6">
@@ -211,7 +236,7 @@ export default function Index() {
                     <div className="bg-card border border-border hover:border-primary/40 transition-all overflow-hidden">
                       <div className="aspect-video bg-secondary overflow-hidden relative">
                         {firstImage ? (
-                          <img src={firstImage.url} alt={courseData?.title || "Kurs"} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                          <img src={firstImage.url} alt={courseData?.title || "Kursgjennomføring"} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-muted-foreground">
                             <Calendar className="h-10 w-10" strokeWidth={1} />

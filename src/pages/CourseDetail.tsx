@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { courseTypeLabels, languageLabels, type MediaItem } from "@/lib/types";
 import IconPlate from "@/components/icons/IconPlate";
+import Seo, { SITE_NAME, SITE_URL } from "@/components/Seo";
 import { MapPin, Calendar, Users, Star, Clock, FileText, Shield, Globe } from "lucide-react";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale";
@@ -122,8 +123,38 @@ export default function CourseDetail() {
     { id: "praktisk", title: "Praktisk info", content: course.practical_info, render: "text" as const },
   ].filter((s) => !!s.content);
 
+  const courseJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": course.title,
+    "description": course.short_description || course.description || `${course.title} – sertifisert kursopplæring`,
+    "provider": {
+      "@type": "Organization",
+      "name": SITE_NAME,
+      "url": SITE_URL,
+    },
+    ...(heroImage ? { image: heroImage } : {}),
+    ...(avgRating && reviews && reviews.length > 0
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: avgRating,
+            reviewCount: reviews.length,
+          },
+        }
+      : {}),
+  };
+
   return (
     <div>
+      <Seo
+        title={course.title}
+        description={course.short_description || course.description?.slice(0, 160) || `${course.title} – sertifisert kursopplæring fra ${SITE_NAME}.`}
+        canonical={`/kurs/${course.slug}`}
+        image={heroImage || undefined}
+        type="article"
+        jsonLd={courseJsonLd}
+      />
       {/* ═══ HERO – Split: image left, yellow info right ═══ */}
       <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[50vh] lg:min-h-[60vh]">
         {/* Left – Image */}

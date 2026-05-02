@@ -435,10 +435,11 @@ export default function CourseDetail() {
                   {reviews.map((review) => (
                     <div key={review.id} className="border-b border-border/30 pb-6 last:border-0">
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="flex">
+                        <div className="flex" role="img" aria-label={`Vurdering: ${review.rating} av 5 stjerner`}>
                           {Array.from({ length: 5 }).map((_, i) => (
                             <Star
                               key={i}
+                              aria-hidden="true"
                               className={`h-4 w-4 ${i < review.rating ? "fill-primary text-primary" : "text-muted"}`}
                             />
                           ))}

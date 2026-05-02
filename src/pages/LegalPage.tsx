@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import Seo from "@/components/Seo";
 
 function renderMarkdown(md: string) {
   // Simple markdown-to-HTML: headings, bold, links, line breaks
@@ -44,6 +45,7 @@ export default function LegalPage() {
   if (!page) {
     return (
       <div className="py-20 text-center">
+        <Seo title="Siden finnes ikke" description="Denne siden er ikke publisert eller finnes ikke." />
         <h1 className="text-2xl font-bold mb-2">Siden finnes ikke</h1>
         <p className="text-muted-foreground">Denne siden er ikke publisert eller finnes ikke.</p>
       </div>
@@ -52,6 +54,11 @@ export default function LegalPage() {
 
   return (
     <div className="py-12 px-4">
+      <Seo
+        title={page.title}
+        description={`${page.title} – Kragerø Maskin og Opplæring.`}
+        canonical={`/${slug}`}
+      />
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl font-bold mb-8" style={{ fontFamily: "Oswald, sans-serif" }}>{page.title}</h1>
         <div

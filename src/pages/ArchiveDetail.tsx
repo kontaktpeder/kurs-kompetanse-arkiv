@@ -154,10 +154,18 @@ export default function ArchiveDetail() {
           <div className="space-y-4">
             <div>
               <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Vurdering</label>
-              <div className="flex gap-1">
+              <div className="flex gap-1" role="radiogroup" aria-label="Vurdering fra 1 til 5 stjerner">
                 {[1, 2, 3, 4, 5].map((n) => (
-                  <button key={n} onClick={() => setRating(n)} type="button">
+                  <button
+                    key={n}
+                    onClick={() => setRating(n)}
+                    type="button"
+                    role="radio"
+                    aria-checked={rating === n}
+                    aria-label={`${n} av 5 stjerner`}
+                  >
                     <Star
+                      aria-hidden="true"
                       className={`h-6 w-6 cursor-pointer transition-colors ${
                         n <= rating ? "fill-primary text-primary" : "text-muted hover:text-primary/50"
                       }`}

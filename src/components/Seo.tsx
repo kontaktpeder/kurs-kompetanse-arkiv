@@ -79,7 +79,9 @@ export default function Seo({
       "Sertifisert og dokumentert kursopplæring for industri, bygg og anlegg. På norsk, engelsk og tegnspråk – siden 2006.";
 
     const path = canonical ?? window.location.pathname + window.location.search;
-    const canonicalUrl = path.startsWith("http") ? path : `${SITE_URL}${path}`;
+    let canonicalUrl = path.startsWith("http") ? path : `${SITE_URL}${path}`;
+    // Force non-www to match Open Graph + avoid duplicate-content issues
+    canonicalUrl = canonicalUrl.replace("https://www.kurskragero.no", "https://kurskragero.no");
     const img = image ?? DEFAULT_IMAGE;
 
     setMeta("name", "description", desc);

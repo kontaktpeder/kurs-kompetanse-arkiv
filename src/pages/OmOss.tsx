@@ -4,6 +4,7 @@ import TeamMemberCard from "@/components/team/TeamMemberCard";
 import { Globe, Hand } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import Seo from "@/components/Seo";
 
 export default function OmOss() {
   const { isAdmin } = useAuth();
@@ -24,6 +25,11 @@ export default function OmOss() {
 
   return (
     <div>
+      <Seo
+        title="Om oss"
+        description="Vi har drevet med kurs siden 2006 – med bakgrunn som lærer, byggmester, entreprenør, kranfører, truckfører og mer. Møt teamet."
+        canonical="/om-oss"
+      />
       {/* Hero */}
       <section className="bg-secondary py-16 sm:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

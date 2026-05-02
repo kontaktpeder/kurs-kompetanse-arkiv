@@ -10,6 +10,7 @@ import { MapPin, Calendar, Users, CheckCircle, Star } from "lucide-react";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale";
 import { toast } from "sonner";
+import Seo from "@/components/Seo";
 
 export default function ArchiveDetail() {
   const { id } = useParams<{ id: string }>();
@@ -64,8 +65,20 @@ export default function ArchiveDetail() {
   if (isLoading) return <div className="py-20 text-center text-muted-foreground">Laster...</div>;
   if (!run) return <div className="py-20 text-center text-muted-foreground">Ikke funnet</div>;
 
+  const seoTitle = courseData?.title
+    ? `${courseData.title} – gjennomføring`
+    : "Kursgjennomføring";
+  const firstImg = images[0]?.url;
+
   return (
     <div className="py-12 px-4">
+      <Seo
+        title={seoTitle}
+        description={run.summary?.slice(0, 160) || `${courseData?.title || "Kursgjennomføring"} – dokumentert kursgjennomføring.`}
+        canonical={`/arkiv/${id}`}
+        image={firstImg}
+        type="article"
+      />
       <div className="max-w-4xl mx-auto">
         {/* Breadcrumb */}
         <div className="text-sm text-muted-foreground mb-8">
@@ -108,7 +121,12 @@ export default function ArchiveDetail() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-8">
             {images.map((img, i) => (
               <div key={i} className={`overflow-hidden ${i === 0 && images.length > 1 ? "md:col-span-2" : ""}`}>
-                <img src={img.url} alt={img.alt || "Kursbilde"} className="w-full h-auto object-cover" />
+                <img
+                  src={img.url}
+                  alt={img.alt || `${courseData?.title || "Kursgjennomføring"} – bilde ${i + 1}`}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  className="w-full h-auto object-cover"
+                />
               </div>
             ))}
           </div>
@@ -136,10 +154,18 @@ export default function ArchiveDetail() {
           <div className="space-y-4">
             <div>
               <label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Vurdering</label>
-              <div className="flex gap-1">
+              <div className="flex gap-1" role="radiogroup" aria-label="Vurdering fra 1 til 5 stjerner">
                 {[1, 2, 3, 4, 5].map((n) => (
-                  <button key={n} onClick={() => setRating(n)} type="button">
+                  <button
+                    key={n}
+                    onClick={() => setRating(n)}
+                    type="button"
+                    role="radio"
+                    aria-checked={rating === n}
+                    aria-label={`${n} av 5 stjerner`}
+                  >
                     <Star
+                      aria-hidden="true"
                       className={`h-6 w-6 cursor-pointer transition-colors ${
                         n <= rating ? "fill-primary text-primary" : "text-muted hover:text-primary/50"
                       }`}

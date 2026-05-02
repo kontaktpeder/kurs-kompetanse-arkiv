@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import IconPlate from "@/components/icons/IconPlate";
 import { courseTypeLabels, languageLabels } from "@/lib/types";
+import Seo from "@/components/Seo";
 import { ArrowRight } from "lucide-react";
 
 export default function Courses() {
@@ -21,6 +22,11 @@ export default function Courses() {
 
   return (
     <div className="py-12 px-4">
+      <Seo
+        title="Kurs vi tilbyr"
+        description="Se alle kurs vi tilbyr på bestilling – sertifisert opplæring tilpasset din bedrift, på norsk, engelsk og tegnspråk."
+        canonical="/kurs"
+      />
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-bold mb-2">Kurs</h1>
         <p className="text-muted-foreground mb-8">Alle våre kurs tilbys på bestilling til din bedrift</p>
@@ -35,7 +41,7 @@ export default function Courses() {
                 <div className="bg-card border border-border hover:border-primary/60 hover:shadow-[0_0_30px_hsl(45_100%_50%/0.08)] transition-all h-full overflow-hidden relative">
                   {course.image_url && (
                     <div className="aspect-[3/1] overflow-hidden">
-                      <img src={course.image_url} alt={course.title} className="w-full h-full object-cover" />
+                      <img src={course.image_url} alt={course.title} className="w-full h-full object-cover" loading="lazy" />
                     </div>
                   )}
                   <div className="p-6">

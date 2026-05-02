@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { type MediaItem } from "@/lib/types";
 import IconPlate from "@/components/icons/IconPlate";
+import Seo from "@/components/Seo";
 import { MapPin, Calendar, Users, CheckCircle } from "lucide-react";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale";
@@ -61,6 +62,11 @@ export default function Archive() {
 
   return (
     <div className="py-12 px-4">
+      <Seo
+        title="Arkiv – dokumenterte kursgjennomføringer"
+        description="Bla gjennom dokumenterte kursgjennomføringer med bilder, deltakerantall og bestått-statistikk."
+        canonical="/arkiv"
+      />
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-bold mb-2">Arkiv</h1>
         <p className="text-muted-foreground mb-8">Dokumenterte kursgjennomføringer</p>
@@ -104,7 +110,8 @@ export default function Archive() {
                     {firstImage ? (
                       <img
                         src={firstImage.url}
-                        alt={courseData?.title || "Kurs"}
+                        alt={courseData?.title || "Kursgjennomføring"}
+                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (

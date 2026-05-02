@@ -9,6 +9,7 @@ import { languageLabels } from "@/lib/types";
 import { toast } from "sonner";
 import { CheckCircle, ChevronDown } from "lucide-react";
 import IconPlate from "@/components/icons/IconPlate";
+import Seo from "@/components/Seo";
 
 interface CourseOption {
   id: string;
@@ -97,6 +98,7 @@ export default function Inquiry() {
   if (submitted) {
     return (
       <div className="py-20 px-4">
+        <Seo title="Takk for forespørselen" description="Vi har mottatt forespørselen din og tar kontakt så snart som mulig." canonical="/foresporsel" />
         <div className="max-w-lg mx-auto text-center">
           <CheckCircle className="h-16 w-16 text-primary mx-auto mb-6" strokeWidth={1.5} />
           <h1 className="text-4xl font-bold mb-4">Takk for din forespørsel!</h1>
@@ -108,6 +110,11 @@ export default function Inquiry() {
 
   return (
     <div className="py-12 px-4">
+      <Seo
+        title="Send forespørsel"
+        description="Send oss en forespørsel om kurs – fyll ut skjemaet, så tar vi kontakt med et tilpasset tilbud."
+        canonical="/foresporsel"
+      />
       <div className="max-w-2xl mx-auto">
         <h1 className="text-4xl font-bold mb-2">Send forespørsel</h1>
         <p className="text-muted-foreground mb-8">

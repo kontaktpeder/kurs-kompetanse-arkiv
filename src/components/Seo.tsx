@@ -91,6 +91,11 @@ export default function Seo({
     setMeta("property", "og:type", type);
     setMeta("property", "og:url", canonicalUrl);
     setMeta("property", "og:image", img);
+    setMeta("property", "og:image:secure_url", img);
+    setMeta("property", "og:image:type", "image/jpeg");
+    setMeta("property", "og:image:width", "1200");
+    setMeta("property", "og:image:height", "630");
+    setMeta("property", "og:image:alt", `${SITE_NAME} – sertifisert kursopplæring`);
     setMeta("property", "og:locale", "nb_NO");
 
     setMeta("name", "twitter:card", "summary_large_image");

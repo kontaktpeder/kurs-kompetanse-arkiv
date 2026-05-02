@@ -6,6 +6,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 interface Slide {
   id: string;
   image_url: string;
+  title?: string | null;
+  subtitle?: string | null;
+  alt_text?: string | null;
 }
 
 interface HeroCarouselProps {
@@ -76,6 +79,11 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
   if (!slides[current]) return null;
 
   const microLabel = microLabels[current % microLabels.length];
+  const activeSlide = slides[current];
+  const headline = activeSlide.title?.trim() || "Kurs som gir kompetanse";
+  const subline =
+    activeSlide.subtitle?.trim() ||
+    "Sertifisert og dokumentert opplæring – på norsk, engelsk og tegnspråk.";
 
   return (
     <section
@@ -100,7 +108,7 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
                 fontSize: "clamp(32px, 3.5vw, 56px)",
               }}
             >
-              Kurs som gir kompetanse
+              {headline}
             </h1>
 
             {/* Yellow accent line */}
@@ -108,7 +116,7 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
 
             {/* Subtitle */}
             <p className="text-primary-foreground/80 text-base sm:text-lg max-w-sm mb-8 leading-relaxed">
-              Sertifisert og dokumentert opplæring – på norsk, engelsk og tegnspråk.
+              {subline}
             </p>
 
             {/* CTAs */}
@@ -152,7 +160,8 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
             >
               <img
                 src={s.image_url}
-                alt=""
+                alt={s.alt_text || s.title || "Kurs som gir kompetanse"}
+                loading={i === current ? "eager" : "lazy"}
                 className="w-full h-full object-cover"
                 style={{ objectPosition: "center 35%" }}
               />

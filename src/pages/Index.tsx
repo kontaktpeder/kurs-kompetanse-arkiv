@@ -99,13 +99,27 @@ export default function Index() {
     ],
   };
 
+  const faqJsonLd = faqs && faqs.length > 0
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faqs.map((f: any) => ({
+          "@type": "Question",
+          "name": f.question,
+          "acceptedAnswer": { "@type": "Answer", "text": f.answer },
+        })),
+      }
+    : null;
+
+  const jsonLd = faqJsonLd ? [localBusinessJsonLd, faqJsonLd] : localBusinessJsonLd;
+
   return (
     <>
       <Seo
         title="Sertifisert kursopplæring siden 2006"
         description="Kragerø Maskin og Opplæring tilbyr sertifisert og dokumentert kursopplæring for industri, bygg og anlegg. På norsk, engelsk og tegnspråk."
         canonical="/"
-        jsonLd={localBusinessJsonLd}
+        jsonLd={jsonLd}
       />
       {/* HERO */}
       {hasSlides ? (

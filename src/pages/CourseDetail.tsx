@@ -163,6 +163,7 @@ export default function CourseDetail() {
             <img
               src={heroImage}
               alt={course.title}
+              loading="eager"
               className="w-full h-full object-cover absolute inset-0"
               style={{ objectPosition: "50% 15%" }}
             />
@@ -388,7 +389,8 @@ export default function CourseDetail() {
                             <div className="aspect-video overflow-hidden mb-3">
                               <img
                                 src={firstImage.url}
-                                alt="Gjennomføring"
+                                alt={`${course.title} – gjennomføring`}
+                                loading="lazy"
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                               />
                             </div>

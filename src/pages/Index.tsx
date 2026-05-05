@@ -55,7 +55,7 @@ export default function Index() {
     },
   });
 
-  const { data: heroSlides } = useQuery({
+  const { data: heroSlides, isLoading: heroSlidesLoading } = useQuery({
     queryKey: ["hero-slides"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -124,8 +124,11 @@ export default function Index() {
       {/* HERO */}
       {hasSlides ? (
         <HeroCarousel slides={heroSlides} totalRuns={totalRuns} />
+      ) : heroSlidesLoading ? (
+        /* Skeleton while slides load – avoids flashing fallback AI image */
+        <section className="min-h-[60vh] lg:min-h-[80vh] bg-primary" aria-hidden="true" />
       ) : (
-        /* Fallback static hero */
+        /* Fallback static hero (only when no slides exist in DB) */
         <section className="min-h-[80vh] grid grid-cols-1 lg:grid-cols-5">
           <div className="lg:col-span-3 flex flex-col justify-center px-6 sm:px-12 lg:px-20 py-20">
             <p className="text-primary text-sm uppercase tracking-[0.3em] font-semibold mb-6">Sertifisert opplæring</p>

@@ -55,7 +55,7 @@ export default function Index() {
     },
   });
 
-  const { data: heroSlides } = useQuery({
+  const { data: heroSlides, isLoading: heroSlidesLoading } = useQuery({
     queryKey: ["hero-slides"],
     queryFn: async () => {
       const { data, error } = await supabase

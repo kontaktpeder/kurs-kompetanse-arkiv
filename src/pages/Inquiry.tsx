@@ -72,20 +72,47 @@ export default function Inquiry() {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("leads").insert({
-        course_id: form.course_id || null,
-        name: form.name.trim(),
-        email: form.email.trim() || null,
-        phone: form.phone.trim() || null,
-        company: form.company.trim() || null,
-        participants_estimate: form.participants_estimate ? parseInt(form.participants_estimate) : null,
-        language_preference: form.language_preference || null,
-        location_text: form.location_text.trim() || null,
-        desired_timeframe: form.desired_timeframe.trim() || null,
-        message: form.message.trim() || null,
-        status: "new",
-      });
+      const { data: inserted, error } = await supabase
+        .from("leads")
+        .insert({
+          course_id: form.course_id || null,
+          name: form.name.trim(),
+          email: form.email.trim() || null,
+          phone: form.phone.trim() || null,
+          company: form.company.trim() || null,
+          participants_estimate: form.participants_estimate ? parseInt(form.participants_estimate) : null,
+          language_preference: form.language_preference || null,
+          location_text: form.location_text.trim() || null,
+          desired_timeframe: form.desired_timeframe.trim() || null,
+          message: form.message.trim() || null,
+          status: "new",
+        })
+        .select("id")
+        .single();
       if (error) throw error;
+
+      // Notify admin via email (best-effort: don't block success on email failure)
+      try {
+        const courseTitle = courses?.find((c) => c.id === form.course_id)?.title;
+        await supabase.functions.invoke("send-contact-email", {
+          body: {
+            name: form.name.trim(),
+            email: form.email.trim() || undefined,
+            phone: form.phone.trim() || undefined,
+            company: form.company.trim() || undefined,
+            course: courseTitle,
+            participants: form.participants_estimate || undefined,
+            language: form.language_preference || undefined,
+            location: form.location_text.trim() || undefined,
+            timeframe: form.desired_timeframe.trim() || undefined,
+            message: form.message.trim() || undefined,
+            source: "Forespørselsskjema (/foresporsel)",
+            leadId: inserted?.id,
+          },
+        });
+      } catch (e) {
+        console.error("E-postvarsling feilet:", e);
+      }
     },
     onSuccess: () => setSubmitted(true),
     onError: (e: Error) => toast.error("Noe gikk galt: " + e.message),

@@ -13,7 +13,7 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-const TO_EMAIL = "lbl@krap.no";
+const TO_EMAILS = ["lbl@krap.no", "kontaktpeder@gmail.com"];
 const FROM = "Kurs Kragerø <noreply@kurskragero.no>";
 
 interface Payload {

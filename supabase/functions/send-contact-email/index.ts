@@ -112,7 +112,7 @@ Deno.serve(async (req) => {
     const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
       from: FROM,
-      to: [TO_EMAIL],
+      to: TO_EMAILS,
       replyTo: p.email?.trim() || undefined,
       subject: "Ny forespørsel fra Kurs Kragerø",
       html,

@@ -13,7 +13,7 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-const TO_EMAIL = "lbl@krap.no";
+const TO_EMAILS = ["lbl@krap.no", "kontaktpeder@gmail.com"];
 const FROM = "Kurs Kragerø <noreply@kurskragero.no>";
 
 interface Payload {
@@ -112,7 +112,7 @@ Deno.serve(async (req) => {
     const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
       from: FROM,
-      to: [TO_EMAIL],
+      to: TO_EMAILS,
       replyTo: p.email?.trim() || undefined,
       subject: "Ny forespørsel fra Kurs Kragerø",
       html,

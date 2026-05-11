@@ -122,6 +122,16 @@ async function main() {
 
   await writeFile("public/sitemap.xml", xml, "utf8");
 
+  const status = {
+    generatedAt: new Date().toISOString(),
+    totalUrls: finalEntries.length,
+    staticCount: STATIC_PATHS.length,
+    coursesCount: courseEntries.length,
+    archiveCount: archiveEntries.length,
+    verified: VERIFY_HTTP,
+  };
+  await writeFile("public/sitemap-status.json", JSON.stringify(status, null, 2), "utf8");
+
   console.log(`Sitemap generated: ${finalEntries.length} URLs`);
   console.log(
     `Includes ${STATIC_PATHS.length} static + ${courseEntries.length} course + ${archiveEntries.length} archive candidates`

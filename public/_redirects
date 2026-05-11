@@ -1,1 +1,5 @@
+http://www.kurskragero.no/* https://kurskragero.no/:splat 301!
+https://www.kurskragero.no/* https://kurskragero.no/:splat 301!
+http://kurskragero.no/* https://kurskragero.no/:splat 301!
+
 /*    /index.html   200

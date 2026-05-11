@@ -80,6 +80,7 @@ const App = () => (
               <Route path="/admin/hero" element={<AdminHeroSlides />} />
               <Route path="/admin/kategorier" element={<AdminCategories />} />
               <Route path="/admin/innhold" element={<AdminInnhold />} />
+              <Route path="/admin/sitemap" element={<AdminSitemap />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />

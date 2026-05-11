@@ -90,6 +90,21 @@ export default function CourseDetail() {
     enabled: !!course?.id,
   });
 
+  const { data: courseFaqs } = useQuery({
+    queryKey: ["course-faqs", course?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("course_faqs" as any)
+        .select("id, question, answer, sort_order")
+        .eq("course_id", course!.id)
+        .eq("is_published", true)
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as unknown as Array<{ id: string; question: string; answer: string; sort_order: number }>;
+    },
+    enabled: !!course?.id,
+  });
+
   const { data: reviews } = useQuery({
     queryKey: ["course-reviews", course?.id],
     queryFn: async () => {
@@ -145,6 +160,18 @@ export default function CourseDetail() {
       : {}),
   };
 
+  const faqJsonLd = courseFaqs && courseFaqs.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": courseFaqs.map((f) => ({
+      "@type": "Question",
+      "name": f.question,
+      "acceptedAnswer": { "@type": "Answer", "text": f.answer },
+    })),
+  } : null;
+
+  const seoJsonLd = faqJsonLd ? [courseJsonLd, faqJsonLd] : courseJsonLd;
+
   return (
     <div>
       <Seo
@@ -153,7 +180,7 @@ export default function CourseDetail() {
         canonical={`/kurs/${course.slug}`}
         image={heroImage || undefined}
         type="article"
-        jsonLd={courseJsonLd}
+        jsonLd={seoJsonLd}
       />
       {/* ═══ HERO – Split: image left, yellow info right ═══ */}
       <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[50vh] lg:min-h-[60vh]">
@@ -455,6 +482,48 @@ export default function CourseDetail() {
                     </div>
                   ))}
                 </div>
+              </div>
+            </>
+          )}
+
+          {/* FAQ */}
+          {courseFaqs && courseFaqs.length > 0 && (
+            <>
+              <SectionDivider />
+              <div id="faq" className="scroll-mt-28">
+                <SectionHeading>Ofte stilte spørsmål</SectionHeading>
+                <Accordion type="single" collapsible className="space-y-0">
+                  {courseFaqs.map((faq) => (
+                    <AccordionItem
+                      key={faq.id}
+                      value={faq.id}
+                      className="border-b border-border/30 border-t-0 border-x-0 py-0"
+                    >
+                      <AccordionTrigger className="py-5 hover:no-underline">
+                        <span className="text-base font-semibold text-left" style={{ fontFamily: "Oswald, sans-serif" }}>
+                          {faq.question}
+                        </span>
+                      </AccordionTrigger>
+                      <AccordionContent className="pb-6 pt-0">
+                        <p className="text-base text-muted-foreground leading-relaxed whitespace-pre-wrap">{faq.answer}</p>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+
+              {/* CTA */}
+              <SectionDivider />
+              <div className="bg-primary text-primary-foreground p-8 sm:p-12">
+                <h3 className="text-2xl sm:text-3xl font-bold mb-3" style={{ fontFamily: "Oswald, sans-serif" }}>
+                  Ønsker du neste kursdato eller tilbud?
+                </h3>
+                <p className="text-base sm:text-lg mb-6 opacity-90 max-w-2xl">
+                  Kontakt oss for tilpasset opplæring for din bedrift eller for deg som privatperson i Telemark.
+                </p>
+                <Button asChild size="lg" variant="secondary">
+                  <Link to={`/foresporsel?kurs=${course.id}`}>Send forespørsel</Link>
+                </Button>
               </div>
             </>
           )}

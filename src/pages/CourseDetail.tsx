@@ -100,7 +100,7 @@ export default function CourseDetail() {
         .eq("is_published", true)
         .order("sort_order", { ascending: true });
       if (error) throw error;
-      return (data ?? []) as Array<{ id: string; question: string; answer: string; sort_order: number }>;
+      return (data ?? []) as unknown as Array<{ id: string; question: string; answer: string; sort_order: number }>;
     },
     enabled: !!course?.id,
   });

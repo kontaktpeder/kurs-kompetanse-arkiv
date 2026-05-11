@@ -175,12 +175,13 @@ export default function CourseDetail() {
   return (
     <div>
       <Seo
-        title={course.title}
+        title={`${course.title} i Telemark | KursKragerø`}
         description={course.short_description || course.description?.slice(0, 160) || `${course.title} – sertifisert kursopplæring fra ${SITE_NAME}.`}
         canonical={`/kurs/${course.slug}`}
         image={heroImage || undefined}
         type="article"
         jsonLd={seoJsonLd}
+        noSuffix
       />
       {/* ═══ HERO – Split: image left, yellow info right ═══ */}
       <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[50vh] lg:min-h-[60vh]">

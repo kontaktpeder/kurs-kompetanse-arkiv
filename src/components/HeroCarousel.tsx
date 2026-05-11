@@ -80,10 +80,12 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
 
   const microLabel = microLabels[current % microLabels.length];
   const activeSlide = slides[current];
-  const headline = activeSlide.title?.trim() || "Kurs som gir kompetanse";
+  const headline =
+    activeSlide.title?.trim() ||
+    "Truckkurs, krankurs og sikkerhetskurs i Telemark";
   const subline =
     activeSlide.subtitle?.trim() ||
-    "Sertifisert og dokumentert opplæring – på norsk, engelsk og tegnspråk.";
+    "Praktisk opplæring for bygg, industri og transport siden 2006.";
 
   return (
     <section

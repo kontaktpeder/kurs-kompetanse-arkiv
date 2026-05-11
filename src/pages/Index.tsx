@@ -131,12 +131,12 @@ export default function Index() {
         /* Fallback static hero (only when no slides exist in DB) */
         <section className="min-h-[80vh] grid grid-cols-1 lg:grid-cols-5">
           <div className="lg:col-span-3 flex flex-col justify-center px-6 sm:px-12 lg:px-20 py-20">
-            <p className="text-primary text-sm uppercase tracking-[0.3em] font-semibold mb-6">Sertifisert opplæring</p>
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[0.95] mb-6">
-              Kurs som gir<br />kompetanse
+            <p className="text-primary text-sm uppercase tracking-[0.3em] font-semibold mb-6">Sertifisert opplæring i Telemark</p>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[0.95] mb-6" style={{ fontFamily: 'Oswald, sans-serif' }}>
+              Truckkurs, krankurs og sikkerhetskurs i Telemark
             </h1>
             <p className="text-muted-foreground text-lg max-w-md mb-10">
-              Sertifisert og dokumentert opplæring – på norsk, engelsk og tegnspråk.
+              Praktisk opplæring for bygg, industri og transport siden 2006.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button asChild size="lg">
@@ -165,6 +165,17 @@ export default function Index() {
           </div>
         </section>
       )}
+
+      {/* TRUST STRIP */}
+      <section className="bg-primary text-primary-foreground">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-xs sm:text-sm font-semibold uppercase tracking-wider">
+          <span className="flex items-center gap-2">✓ Opplæring siden 2006</span>
+          <span className="hidden sm:flex items-center gap-2">✓ Norsk · Engelsk · Tegnspråk</span>
+          <span className="sm:hidden flex items-center gap-2">✓ 3 språk</span>
+          <span className="flex items-center gap-2">✓ Bedrifter og privatpersoner</span>
+          <span className="hidden md:flex items-center gap-2">✓ Praktisk erfaring fra bygg og industri</span>
+        </div>
+      </section>
 
       {/* STATS */}
       <section className="py-20 px-4 border-t border-border">

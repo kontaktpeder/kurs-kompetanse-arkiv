@@ -129,6 +129,9 @@ async function main() {
     coursesCount: courseEntries.length,
     archiveCount: archiveEntries.length,
     verified: VERIFY_HTTP,
+    staticPaths: STATIC_PATHS.map(toCanonicalUrl),
+    courseUrls: courseEntries.map((e) => toCanonicalUrl(e.path)).sort(),
+    archiveUrls: archiveEntries.map((e) => toCanonicalUrl(e.path)).sort(),
   };
   await writeFile("public/sitemap-status.json", JSON.stringify(status, null, 2), "utf8");
 

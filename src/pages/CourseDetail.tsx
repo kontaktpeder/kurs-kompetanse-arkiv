@@ -160,6 +160,18 @@ export default function CourseDetail() {
       : {}),
   };
 
+  const faqJsonLd = courseFaqs && courseFaqs.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": courseFaqs.map((f) => ({
+      "@type": "Question",
+      "name": f.question,
+      "acceptedAnswer": { "@type": "Answer", "text": f.answer },
+    })),
+  } : null;
+
+  const seoJsonLd = faqJsonLd ? [courseJsonLd, faqJsonLd] : courseJsonLd;
+
   return (
     <div>
       <Seo
@@ -168,7 +180,7 @@ export default function CourseDetail() {
         canonical={`/kurs/${course.slug}`}
         image={heroImage || undefined}
         type="article"
-        jsonLd={courseJsonLd}
+        jsonLd={seoJsonLd}
       />
       {/* ═══ HERO – Split: image left, yellow info right ═══ */}
       <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[50vh] lg:min-h-[60vh]">

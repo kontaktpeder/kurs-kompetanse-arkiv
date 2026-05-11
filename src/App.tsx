@@ -27,6 +27,7 @@ import AdminLegal from "./pages/admin/AdminLegal";
 import AdminHeroSlides from "./pages/admin/AdminHeroSlides";
 import AdminCategories from "./pages/admin/AdminCategories";
 import AdminInnhold from "./pages/admin/AdminInnhold";
+import AdminSitemap from "./pages/admin/AdminSitemap";
 import OmOss from "./pages/OmOss";
 import EventTeambuilding from "./pages/EventTeambuilding";
 import LegalPage from "./pages/LegalPage";
@@ -79,6 +80,7 @@ const App = () => (
               <Route path="/admin/hero" element={<AdminHeroSlides />} />
               <Route path="/admin/kategorier" element={<AdminCategories />} />
               <Route path="/admin/innhold" element={<AdminInnhold />} />
+              <Route path="/admin/sitemap" element={<AdminSitemap />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />

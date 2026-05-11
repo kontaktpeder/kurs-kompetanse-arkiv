@@ -1,8 +1,28 @@
 {
-  "generatedAt": "2026-05-11T10:06:34.956Z",
+  "generatedAt": "2026-05-11T10:11:19.563Z",
   "totalUrls": 15,
   "staticCount": 8,
   "coursesCount": 7,
   "archiveCount": 0,
-  "verified": false
+  "verified": false,
+  "staticPaths": [
+    "https://kurskragero.no/",
+    "https://kurskragero.no/kurs",
+    "https://kurskragero.no/arkiv",
+    "https://kurskragero.no/foresporsel",
+    "https://kurskragero.no/om-oss",
+    "https://kurskragero.no/event-teambuilding",
+    "https://kurskragero.no/personvern",
+    "https://kurskragero.no/vilkar"
+  ],
+  "courseUrls": [
+    "https://kurskragero.no/kurs/fallsikringskurs",
+    "https://kurskragero.no/kurs/g11-lofteredskap-anhuker-signalgiver",
+    "https://kurskragero.no/kurs/liftkurs-personlofter",
+    "https://kurskragero.no/kurs/maskinforerkurs-m1-m7",
+    "https://kurskragero.no/kurs/teleskoptruck-c1-c2",
+    "https://kurskragero.no/kurs/traverskran-g4",
+    "https://kurskragero.no/kurs/truckforerkurs-t1-t5"
+  ],
+  "archiveUrls": []
 }

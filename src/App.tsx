@@ -27,6 +27,7 @@ import AdminLegal from "./pages/admin/AdminLegal";
 import AdminHeroSlides from "./pages/admin/AdminHeroSlides";
 import AdminCategories from "./pages/admin/AdminCategories";
 import AdminInnhold from "./pages/admin/AdminInnhold";
+import AdminSitemap from "./pages/admin/AdminSitemap";
 import OmOss from "./pages/OmOss";
 import EventTeambuilding from "./pages/EventTeambuilding";
 import LegalPage from "./pages/LegalPage";

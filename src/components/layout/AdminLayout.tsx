@@ -20,6 +20,7 @@ const adminNav = [
   { title: "Hero Slides", path: "/admin/hero", icon: Image },
   { title: "Juridisk", path: "/admin/juridisk", icon: Scale },
   { title: "Innstillinger", path: "/admin/innstillinger", icon: Settings },
+  { title: "Sitemap", path: "/admin/sitemap", icon: Map },
 ];
 
 function NavItems({ isActive, onNavigate }: { isActive: (p: string) => boolean; onNavigate?: () => void }) {

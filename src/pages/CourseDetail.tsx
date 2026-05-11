@@ -485,6 +485,48 @@ export default function CourseDetail() {
               </div>
             </>
           )}
+
+          {/* FAQ */}
+          {courseFaqs && courseFaqs.length > 0 && (
+            <>
+              <SectionDivider />
+              <div id="faq" className="scroll-mt-28">
+                <SectionHeading>Ofte stilte spørsmål</SectionHeading>
+                <Accordion type="single" collapsible className="space-y-0">
+                  {courseFaqs.map((faq) => (
+                    <AccordionItem
+                      key={faq.id}
+                      value={faq.id}
+                      className="border-b border-border/30 border-t-0 border-x-0 py-0"
+                    >
+                      <AccordionTrigger className="py-5 hover:no-underline">
+                        <span className="text-base font-semibold text-left" style={{ fontFamily: "Oswald, sans-serif" }}>
+                          {faq.question}
+                        </span>
+                      </AccordionTrigger>
+                      <AccordionContent className="pb-6 pt-0">
+                        <p className="text-base text-muted-foreground leading-relaxed whitespace-pre-wrap">{faq.answer}</p>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+
+              {/* CTA */}
+              <SectionDivider />
+              <div className="bg-primary text-primary-foreground p-8 sm:p-12">
+                <h3 className="text-2xl sm:text-3xl font-bold mb-3" style={{ fontFamily: "Oswald, sans-serif" }}>
+                  Ønsker du neste kursdato eller tilbud?
+                </h3>
+                <p className="text-base sm:text-lg mb-6 opacity-90 max-w-2xl">
+                  Kontakt oss for tilpasset opplæring for din bedrift eller for deg som privatperson i Telemark.
+                </p>
+                <Button asChild size="lg" variant="secondary">
+                  <Link to={`/foresporsel?kurs=${course.id}`}>Send forespørsel</Link>
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

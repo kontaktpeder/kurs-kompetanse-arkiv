@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-11T10:14:44.491Z",
-  "totalUrls": 15,
+  "generatedAt": "2026-05-11T10:43:19.414Z",
+  "totalUrls": 18,
   "staticCount": 8,
-  "coursesCount": 7,
+  "coursesCount": 10,
   "archiveCount": 0,
   "verified": false,
   "staticPaths": [
@@ -17,12 +17,15 @@
   ],
   "courseUrls": [
     "https://kurskragero.no/kurs/fallsikringskurs",
+    "https://kurskragero.no/kurs/fallsikringskurs-telemark",
     "https://kurskragero.no/kurs/g11-lofteredskap-anhuker-signalgiver",
+    "https://kurskragero.no/kurs/g11-lofteredskap-anhukerkurs-telemark",
     "https://kurskragero.no/kurs/liftkurs-personlofter",
     "https://kurskragero.no/kurs/maskinforerkurs-m1-m7",
     "https://kurskragero.no/kurs/teleskoptruck-c1-c2",
     "https://kurskragero.no/kurs/traverskran-g4",
-    "https://kurskragero.no/kurs/truckforerkurs-t1-t5"
+    "https://kurskragero.no/kurs/truckforerkurs-t1-t5",
+    "https://kurskragero.no/kurs/truckkurs-telemark"
   ],
   "archiveUrls": []
 }

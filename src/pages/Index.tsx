@@ -166,6 +166,17 @@ export default function Index() {
         </section>
       )}
 
+      {/* TRUST STRIP */}
+      <section className="bg-primary text-primary-foreground">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-xs sm:text-sm font-semibold uppercase tracking-wider">
+          <span className="flex items-center gap-2">✓ Opplæring siden 2006</span>
+          <span className="hidden sm:flex items-center gap-2">✓ Norsk · Engelsk · Tegnspråk</span>
+          <span className="sm:hidden flex items-center gap-2">✓ 3 språk</span>
+          <span className="flex items-center gap-2">✓ Bedrifter og privatpersoner</span>
+          <span className="hidden md:flex items-center gap-2">✓ Praktisk erfaring fra bygg og industri</span>
+        </div>
+      </section>
+
       {/* STATS */}
       <section className="py-20 px-4 border-t border-border">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">

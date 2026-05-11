@@ -9,7 +9,11 @@ const SUPABASE_KEY =
 const VERIFY_HTTP = process.env.SITEMAP_VERIFY_HTTP === "true";
 
 if (!SUPABASE_URL || !SUPABASE_KEY) {
-  throw new Error("Missing SUPABASE env vars. Set SUPABASE_URL/VITE_SUPABASE_URL and key.");
+  console.warn(
+    "[generate-sitemap] Missing SUPABASE env vars — skipping sitemap generation. " +
+      "Existing public/sitemap.xml will be used as-is."
+  );
+  process.exit(0);
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });

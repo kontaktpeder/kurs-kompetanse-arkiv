@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
-  LayoutDashboard, BookOpen, Calendar, Inbox, Star, HelpCircle, Users, LogOut, Settings, Scale, Image, Tags, FileText, Menu, X,
+  LayoutDashboard, BookOpen, Calendar, Inbox, Star, HelpCircle, Users, LogOut, Settings, Scale, Image, Tags, FileText, Menu, Map,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";

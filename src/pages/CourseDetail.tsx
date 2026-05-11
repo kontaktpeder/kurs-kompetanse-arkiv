@@ -90,6 +90,21 @@ export default function CourseDetail() {
     enabled: !!course?.id,
   });
 
+  const { data: courseFaqs } = useQuery({
+    queryKey: ["course-faqs", course?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("course_faqs" as any)
+        .select("id, question, answer, sort_order")
+        .eq("course_id", course!.id)
+        .eq("is_published", true)
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as Array<{ id: string; question: string; answer: string; sort_order: number }>;
+    },
+    enabled: !!course?.id,
+  });
+
   const { data: reviews } = useQuery({
     queryKey: ["course-reviews", course?.id],
     queryFn: async () => {

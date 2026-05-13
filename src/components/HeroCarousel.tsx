@@ -84,9 +84,8 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
     activeSlide.title?.trim() || microLabels[current % microLabels.length];
   // Headline is locked across all slides
   const headline = "Truckkurs, krankurs og sikkerhetskurs i Telemark";
-  const subline =
-    activeSlide.subtitle?.trim() ||
-    "Praktisk opplæring for bygg, industri og transport siden 2006.";
+  // Subline is also locked across all slides
+  const subline = "Praktisk opplæring for bygg, industri og transport siden 2006.";
 
   return (
     <section

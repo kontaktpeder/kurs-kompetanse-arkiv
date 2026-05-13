@@ -400,57 +400,9 @@ export default function CourseDetail() {
             </div>
           </div>
 
-          {/* Runs */}
-          {runs && runs.length > 0 && (
-            <>
-              <SectionDivider />
-              <div id="gjennomforinger" className="scroll-mt-28">
-                <SectionHeading>Gjennomføringer</SectionHeading>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {runs.map((run) => {
-                    const media = (run.media as unknown as MediaItem[]) || [];
-                    const firstImage = media.find((m) => m.type === "image");
-                    return (
-                      <Link key={run.id} to={`/arkiv/${run.id}`} className="group">
-                        <div className="overflow-hidden border-b border-border/30 pb-4 hover:border-primary/40 transition-colors">
-                          {firstImage && (
-                            <div className="aspect-video overflow-hidden mb-3">
-                              <img
-                                src={firstImage.url}
-                                alt={`${course.title} – gjennomføring`}
-                                loading="lazy"
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                              />
-                            </div>
-                          )}
-                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                            {run.location_text && (
-                              <span className="flex items-center gap-1">
-                                <MapPin className="h-3.5 w-3.5" /> {run.location_text}
-                              </span>
-                            )}
-                            {run.date_start && (
-                              <span className="flex items-center gap-1">
-                                <Calendar className="h-3.5 w-3.5" />
-                                {run.date_label || format(new Date(run.date_start), "d. MMM yyyy", { locale: nb })}
-                              </span>
-                            )}
-                            {run.participants_count && (
-                              <span className="flex items-center gap-1">
-                                <Users className="h-3.5 w-3.5" /> {run.participants_count}
-                              </span>
-                            )}
-                          </div>
-                          {run.summary && (
-                            <p className="text-sm text-muted-foreground mt-2 line-clamp-2">{run.summary}</p>
-                          )}
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            </>
+          {/* Runs – skjult foreløpig (arkiv ikke synlig for kunder) */}
+          {false && runs && runs.length > 0 && (
+            <></>
           )}
 
           {/* Reviews – always visible */}

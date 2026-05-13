@@ -7,7 +7,7 @@ import logoIcon from "@/assets/logo-icon.png";
 const navItems = [
   { label: "Hjem", to: "/" },
   { label: "Kurs", to: "/kurs" },
-  { label: "Arkiv", to: "/arkiv" },
+  // { label: "Arkiv", to: "/arkiv" }, // skjult foreløpig
   { label: "Om oss", to: "/om-oss" },
   { label: "Event / Teambuilding", to: "/event-teambuilding" },
   { label: "Forespørsel", to: "/foresporsel" },

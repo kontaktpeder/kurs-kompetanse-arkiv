@@ -38,34 +38,34 @@ export default function Courses() {
             const cat = course.category;
             return (
               <Link key={course.id} to={`/kurs/${course.slug}`} className="group">
-                <div className="bg-card border border-border hover:border-primary/60 hover:shadow-[0_0_30px_hsl(45_100%_50%/0.08)] transition-all h-full overflow-hidden relative">
+                <div className="bg-card border border-border hover:border-primary/60 hover:shadow-[0_0_30px_hsl(45_100%_50%/0.08)] transition-all h-full overflow-hidden relative flex flex-col">
                   {course.image_url && (
-                    <div className="aspect-[3/1] overflow-hidden">
+                    <div className="aspect-[4/3] sm:aspect-[3/1] overflow-hidden">
                       <img src={course.image_url} alt={course.title} className="w-full h-full object-cover" loading="lazy" />
                     </div>
                   )}
-                  <div className="p-6">
-                    <h3 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors" style={{ fontFamily: 'Oswald, sans-serif' }}>
+                  <div className="p-3 sm:p-6 flex flex-col flex-1">
+                    <h3 className="text-base sm:text-lg font-semibold mb-1 group-hover:text-primary transition-colors" style={{ fontFamily: 'Oswald, sans-serif' }}>
                       {course.title}
                     </h3>
-                    <span className="inline-block text-xs uppercase tracking-wider bg-secondary text-muted-foreground px-2 py-0.5 mb-3">
+                    <span className="inline-block self-start text-[10px] sm:text-xs uppercase tracking-wider bg-secondary text-muted-foreground px-2 py-0.5 mb-3">
                       {courseTypeLabels[course.course_type] ?? course.course_type}
                     </span>
-                    <p className="text-muted-foreground text-sm mb-3">{course.short_description}</p>
-                    <div className="flex gap-2 flex-wrap mb-4">
+                    <p className="hidden sm:block text-muted-foreground text-sm mb-3">{course.short_description}</p>
+                    <div className="hidden sm:flex gap-2 flex-wrap mb-4">
                       {(course.languages ?? []).map((l: string) => (
                         <span key={l} className="text-[10px] uppercase tracking-wider text-muted-foreground border border-border px-2 py-0.5">
                           {languageLabels[l] ?? l}
                         </span>
                       ))}
                     </div>
-                    <span className="text-xs uppercase tracking-wider text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
+                    <span className="mt-auto text-[11px] sm:text-xs uppercase tracking-wider text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
                       Se kurs <ArrowRight className="h-3 w-3" />
                     </span>
                   </div>
                   {/* Icon – bottom right corner */}
                   {cat && (
-                    <div className="absolute bottom-4 right-4">
+                    <div className="hidden sm:block absolute bottom-4 right-4">
                       <IconPlate
                         svg={cat.icon_svg}
                         pngUrl={cat.icon_png_url}

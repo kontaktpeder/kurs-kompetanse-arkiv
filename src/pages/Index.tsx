@@ -247,54 +247,10 @@ export default function Index() {
         </section>
       )}
 
-      {/* RECENT RUNS */}
-      {recentRuns && recentRuns.length > 0 && (
+      {/* RECENT RUNS – skjult foreløpig (arkiv ikke synlig for kunder) */}
+      {false && recentRuns && recentRuns.length > 0 && (
         <section className="py-20 px-4">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-4xl font-bold mb-4">Siste gjennomførte kurs</h2>
-            <p className="text-muted-foreground mb-12">Dokumenterte kursgjennomføringer</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {recentRuns.map((run) => {
-                const media = (run.media as unknown as MediaItem[]) || [];
-                const firstImage = media.find((m) => m.type === "image");
-                const courseData = run.courses as unknown as { title: string; slug: string } | null;
-                return (
-                  <Link key={run.id} to={`/arkiv/${run.id}`} className="group">
-                    <div className="bg-card border border-border hover:border-primary/40 transition-all overflow-hidden">
-                      <div className="aspect-video bg-secondary overflow-hidden relative">
-                        {firstImage ? (
-                          <img src={firstImage.url} alt={courseData?.title || "Kursgjennomføring"} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                            <Calendar className="h-10 w-10" strokeWidth={1} />
-                          </div>
-                        )}
-                        {run.passed_count != null && run.participants_count != null && (
-                          <div className="absolute top-3 right-3 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 uppercase tracking-wider">
-                            {run.passed_count}/{run.participants_count} bestått
-                          </div>
-                        )}
-                      </div>
-                      <div className="p-4">
-                        <h3 className="font-semibold mb-1" style={{ fontFamily: 'Oswald, sans-serif' }}>{courseData?.title || "Kurs"}</h3>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          {run.location_text && (
-                            <span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5" /> {run.location_text}</span>
-                          )}
-                          {run.date_start && (
-                            <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" /> {run.date_label || format(new Date(run.date_start), "MMM yyyy", { locale: nb })}</span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-            <div className="text-center mt-10">
-              <Button asChild variant="outline"><Link to="/arkiv">Se alle gjennomføringer</Link></Button>
-            </div>
-          </div>
+          <div className="max-w-6xl mx-auto" />
         </section>
       )}
 

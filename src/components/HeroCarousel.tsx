@@ -78,11 +78,12 @@ export default function HeroCarousel({ slides, totalRuns }: HeroCarouselProps) {
 
   if (!slides[current]) return null;
 
-  const microLabel = microLabels[current % microLabels.length];
   const activeSlide = slides[current];
-  const headline =
-    activeSlide.title?.trim() ||
-    "Truckkurs, krankurs og sikkerhetskurs i Telemark";
+  // Kicker (stikkord) can be overridden per slide via title field; otherwise rotates
+  const microLabel =
+    activeSlide.title?.trim() || microLabels[current % microLabels.length];
+  // Headline is locked across all slides
+  const headline = "Truckkurs, krankurs og sikkerhetskurs i Telemark";
   const subline =
     activeSlide.subtitle?.trim() ||
     "Praktisk opplæring for bygg, industri og transport siden 2006.";
